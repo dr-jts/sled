@@ -1,0 +1,59 @@
+body {
+	margin: 0;
+	font-family: Arial;
+}
+.gui {
+	display: inline-block;
+	background: #cccccc;
+	width: 50%;
+}
+.doc {
+	display: inline-block;
+	
+}
+.sld-doc {
+	background: #eeeeee;
+}
+.sld-fts {
+	background: #dddddd;
+	padding: 10px;
+}
+.sld-rule {
+	background: #cccccc;
+	padding: 10px;
+}
+.sld-rule:hover {
+	background: #aaffaa;
+}
+.sld-symbolizer {
+	background: #dddddd;
+	padding: 10px;
+}
+.sld-symbolizer:hover {
+	background: #aaffaa;
+}
+.sld-graphic {
+	background: #eeeeee;
+	padding: 10px;
+}
+.sld-stroke {
+	background: #eeeeee;
+	padding: 10px;
+}
+.sld-stroke:hover {
+	background: #aaffaa;
+}
+.options {
+	font-size: 10pt;
+	font-style: italic;
+}
+.option {
+	font-size: 10pt;
+	font-style: italic;
+	padding: 3px;
+	cursor: pointer;
+	
+}
+.option:hover {
+	color: blue;
+}
