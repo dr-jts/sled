@@ -6,6 +6,9 @@ h2 {
 	font-size: 12pt;
 	margin: 1px;
 }
+input {
+	border-color: white;
+}
 .gui {
 	display: inline-block;
 	background: #cccccc;
@@ -25,37 +28,55 @@ h2 {
 	border: 1px solid white
 }
 .type-block:hover {
-	border: 1px solid red
+	xborder: 1px solid #888888;
+	background: #eeffee;
+}
+.type-value {
+	font-size: 12px;
+	padding: 2px;
 }
 .block-name {
 	font-weight: bold;
 }
 .depth-odd {
 	background: #dddddd;
-	padding: 10px;
 }
 .depth-even {
 	background: #eeeeee;
-	padding: 10px;
 }
-
+.menu {
+	margin-left: 5px;
+	display: inline-block;
+}
+.menu-item {
+	font-size: 9pt;
+	padding: 3px;
+	cursor: pointer;
+	color: blue;	
+}
+.menu-item:hover {
+	color: #6666ff;;
+}
+	
 .ctl-add {
-	font-size: 10pt;
 	font-style: italic;
-	padding: 3px;
+}
+.ctl-option {
+}
+.ctl-disabled {
+	color: #aaaaaa;
+}
+.ctl-disabled:hover {
+	color: #aaaaaa;
+}
+.ctl-delete {
+	color: red;
+	font-size: 11px;
+	font-weight: bold;
+	padding: 2px;
 	cursor: pointer;
-	color: blue;	
+	margin-right: 5px;
 }
-.ctl-add:hover {
-	color: #6666ff;;
-}
-.option-value {
-	font-size: 10pt;
-	xfont-style: italic;
-	padding: 3px;
-	cursor: pointer;
-	color: blue;	
-}
-.option-value:hover {
-	color: #6666ff;;
+.ctl-delete:hover {
+	color: darkred;
 }
