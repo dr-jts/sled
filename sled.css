@@ -2,6 +2,10 @@ body {
 	margin: 0;
 	font-family: Arial;
 }
+h2 {
+	font-size: 12pt;
+	margin: 1px;
+}
 .gui {
 	display: inline-block;
 	background: #cccccc;
@@ -13,47 +17,45 @@ body {
 }
 .sld-doc {
 	background: #eeeeee;
+	padding: 10px;
 }
-.sld-fts {
+.type-block {
+	background: #dddddd;
+	padding: 10px;	
+	border: 1px solid white
+}
+.type-block:hover {
+	border: 1px solid red
+}
+.block-name {
+	font-weight: bold;
+}
+.depth-odd {
 	background: #dddddd;
 	padding: 10px;
 }
-.sld-rule {
-	background: #cccccc;
-	padding: 10px;
-}
-.sld-rule:hover {
-	background: #aaffaa;
-}
-.sld-symbolizer {
-	background: #dddddd;
-	padding: 10px;
-}
-.sld-symbolizer:hover {
-	background: #aaffaa;
-}
-.sld-graphic {
+.depth-even {
 	background: #eeeeee;
 	padding: 10px;
 }
-.sld-stroke {
-	background: #eeeeee;
-	padding: 10px;
-}
-.sld-stroke:hover {
-	background: #aaffaa;
-}
-.options {
-	font-size: 10pt;
-	font-style: italic;
-}
-.option {
+
+.ctl-add {
 	font-size: 10pt;
 	font-style: italic;
 	padding: 3px;
 	cursor: pointer;
-	
+	color: blue;	
 }
-.option:hover {
-	color: blue;
+.ctl-add:hover {
+	color: #6666ff;;
+}
+.option-value {
+	font-size: 10pt;
+	xfont-style: italic;
+	padding: 3px;
+	cursor: pointer;
+	color: blue;	
+}
+.option-value:hover {
+	color: #6666ff;;
 }

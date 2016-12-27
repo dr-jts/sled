@@ -6,7 +6,11 @@
 
 <div class='gui'>
 
-<div class='sld'>
+<div class='doc-root'>
+</div>
+
+<!--
+<div class='sld-doc'>
 <h2>SLD</h2>
 
 <div class='sld-fts'>
@@ -18,8 +22,6 @@
 <div>Min Scale <input type='text' size=20></div>
 <div>Max Scale <input type='text' size=20></div>
 
- 
-
 <div class='sld-symbolizer'>
 <h2>Point Symbolizer</h2>
 
@@ -29,7 +31,7 @@
 </div>
 
 </div>
-<div class='option'>Point Symbolizer</div>
+<div class='option'>[ Point Symbolizer ]</div>
 
 <div class='sld-symbolizer'>
 <h2>Line Symbolizer</h2>
@@ -37,9 +39,9 @@
 <div class='sld-stroke'>
 <h2>Stroke</h2>
 
-<div>stroke <input type='text' size=20></div>
-<div>stroke-width <input type='text' size=20></div>
-<div>stroke-opacity <input type='text' size=20></div>
+<div>Color<input type='text' size=20></div>
+<div>Width <input type='text' size=20></div>
+<div>Opacity <input type='text' size=20></div>
 
 </div>
 
@@ -51,14 +53,27 @@
 
 
 </div>
+<div class='option'>Feature Type Style</div>
 
 
 </div>
-
+-->
 </div>
 
 <div class='doc'>
 </div>
+
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="sled-grammar.js"></script>  
+<script src="sled.js"></script>  
+<script>
+	$( document ).ready(function() {
+		SLED.render($('.doc-root'), 'root');
+	})
+</script>  
 
 </body>
 </html>
