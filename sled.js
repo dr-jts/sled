@@ -37,7 +37,7 @@ SLED.renderBlock = function($obj, ref) {
 		var refContent = rule.content[i];
 		SLED.renderMenuRef($obj, $menu, refContent);
 	}
-	$hdr.append( SLED.renderDelete($obj, ref));
+	$hdr.append( SLED.renderDelete($obj, ref, rule ));
 	$hdr.append($title);
 	$hdr.append($menu);
 	$obj.append($hdr);
@@ -47,12 +47,12 @@ SLED.renderBlock = function($obj, ref) {
 		SLED.renderRefMarker( $obj, refContent );
 	}
 }
-SLED.renderDelete = function($obj, ref) {
+SLED.renderDelete = function($obj, ref, rule) {
 	var $del = null;
 	if ( Ref.isOpt(ref) || Ref.isMany(ref) )  {
 		$del = $('<span class="ctl-delete">').text('x');
 		$del.click(function() {
-			SLED.menuShow($obj, ref.name);
+			SLED.menuShow($obj, rule.title );
 			$obj.remove();
 		});
 	}
@@ -61,7 +61,7 @@ SLED.renderDelete = function($obj, ref) {
 SLED.renderValue = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
 	$item = $('<div class="option-value">')
-		.append( SLED.renderDelete($obj, ref) )
+		.append( SLED.renderDelete($obj, ref, rule) )
 		.append( $('<span class="value-title">').text( rule.title ) )
 		.appendTo($obj);
 		
@@ -87,7 +87,6 @@ SLED.renderMenuRef = function($obj, $menu, ref) {
 		clz = "ctl-option"; 
 		title = rule.title;
 	}
-	
 	
 	var $btn = $('<span>')
 		.addClass("menu-item")
@@ -127,6 +126,7 @@ SLED.findElement = function($e, name) {
 	var elts = $e.find('.element-'+name + ':first');
 	return elts;
 }
+//==============================================================================
 Ref = {};
 Ref.isMany = function(ref) {
 	return ref.mult[1] > 1;
@@ -140,6 +140,9 @@ Ref.toRef = function(refOrName) {
 	}
 	return refOrName;
 }
+
+//==============================================================================
+
 SLED.INDENT = '  ';
 SLED.generate = function($gui, $doc) {
 	$doc.empty();
@@ -152,37 +155,50 @@ SLED.generate = function($gui, $doc) {
 	
 	function gen($parent, indent) {
 		indent = indent + 1;
-		var indTxt = '&nbsp;'.repeat(indent);
+		var indentText = '&nbsp;'.repeat(indent);
 		var $contents = $parent.children();
 		$contents.each(function(i, e) {
 			var $e = $(e);
-			var name = $e.attr('sld-name');
-			if (! name) {
+			var sldName = $e.attr('sld-name');
+			if (! sldName) {
 				gen($e, indent);
 			} 
 			else {
 				if ($e.hasClass('type-block')) {
 					$('<p>')
-						.append(indTxt)
-						.append('&lt;'+name+'&gt;')
+						.append(indentText)
+						.append('&lt;' + sldName + '&gt;')
 						.appendTo($doc);
 					gen($e, indent);
 					$('<p>')
-						.append(indTxt)
-						.append('&lt;/'+name+'&gt;')
+						.append(indentText)
+						.append('&lt;/'+sldName+'&gt;')
 						.appendTo($doc);
 				}
-				else {
-					var input = $e.find('.value-val');
-					var val = $(input).val();
-					if (val.length <= 0) return;
-					var txt = '&lt;'+name+'&gt;' + val + '&lt;/'+name+'&gt;';
-					$('<p>')
-						.append(indTxt)
-						.append(txt)
-						.appendTo($doc);
+				else { 
+					genVal($e, sldName, indentText);
 				}
 			}
 		})
+	}
+	function genVal($e, sldName, indentText) {
+		var input = $e.find('.value-val');
+		var val = $(input).val();
+		if (val.length <= 0) return;
+		
+		var rule = SLED.grammar[ sldName ];
+		var txt;
+		if (rule.css) {
+			txt = '&lt;CssParameter name="' + rule.css + '"&gt;'
+				+ val + '&lt;/CssParameter&gt;';
+		}
+		else {
+			txt = '&lt;' + sldName + '&gt;' 
+				+ val + '&lt;/' + sldName + '&gt;';
+		}
+		$('<p>')
+			.append(indentText)
+			.append(txt)
+			.appendTo($doc);
 	}
 }

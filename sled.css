@@ -37,8 +37,8 @@ input {
 	border: 1px solid white
 }
 .type-block:hover {
-	xborder: 1px solid #888888;
-	background: #bbbbbb;
+	border: 1px solid #888888;
+	background: #e8efe8;
 }
 .type-value {
 	font-size: 12px;
@@ -55,7 +55,7 @@ input {
     font-size: 14px;
 }
 .depth-odd {
-	background: #e0e0e0;
+	background: #d8d8d8;
 }
 .depth-even {
 	background: #e8e8e8;
@@ -72,7 +72,7 @@ input {
 	display:inline-block;
 }
 .menu-item:hover {
-	color: red;
+	color: darkred;
 }
 	
 .ctl-add {

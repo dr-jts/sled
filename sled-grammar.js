@@ -25,7 +25,8 @@ SLED.grammar.Rule = {
 		{ name: "MaxScale",	mult: [0,1] },
 		{ name: "PointSymbolizer",	mult: [0,99] },
 		{ name: "LineSymbolizer",	mult: [0,99] },
-		{ name: "PolygonSymbolizer",	mult: [0,99] }
+		{ name: "PolygonSymbolizer",	mult: [0,99] },
+		{ name: "TextSymbolizer",	mult: [0,99] }
 	]
 };
 SLED.grammar.PointSymbolizer = {
@@ -48,6 +49,18 @@ SLED.grammar.PolygonSymbolizer = {
 		{	name: "Stroke",	mult: [0,1] }
 	]
 };
+SLED.grammar.TextSymbolizer = {
+	title: "Text",
+	content: [
+		{	name: "Label",	mult: [0,1] },
+		{	name: "Font",	mult: [0,1] },
+		{	name: "LabelPlacement",	mult: [0,1] },
+		{	name: "Halo",	mult: [0,1] },
+		{	name: "Fill",	mult: [0,1] },
+		{	name: "Graphic",	mult: [0,1] },
+		{	name: "Priority",	mult: [0,1] }
+	]
+};
 SLED.grammar.Graphic = {
 	title: "Graphic",
 	content: [
@@ -61,12 +74,22 @@ SLED.grammar.Graphic = {
 SLED.grammar.Fill = {
 	title: "Fill",
 	content: [
-		{	name: "FillColor",	mult: [0,1] }
+		{	name: "GraphicFill",	mult: [0,1] },
+		{	name: "FillColor",		mult: [0,1] },
+		{	name: "FillOpacity",	mult: [0,1] }
+	]
+};
+SLED.grammar.GraphicFill = {
+	title: "GraphicFill",
+	content: [
+		{	name: "Graphic",	mult: [1,1] }
 	]
 };
 SLED.grammar.Stroke = {
 	title: "Stroke",
 	content: [
+		{	name: "GraphicFill",	mult: [0,1] },
+		{	name: "GraphicStroke",	mult: [0,1] },
 		{	name: "StrokeColor",	mult: [0,1] },
 		{	name: "Width",	mult: [0,1] },
 		{	name: "StrokeOpacity",	mult: [0,1] },
@@ -74,6 +97,12 @@ SLED.grammar.Stroke = {
 		{	name: "LineCap",	mult: [0,1] },
 		{	name: "DashArray",	mult: [0,1] },
 		{	name: "DashOffset",	mult: [0,1] }
+	]
+};
+SLED.grammar.GraphicStroke = {
+	title: "GraphicStroke",
+	content: [
+		{	name: "Graphic",	mult: [0,1] }
 	]
 };
 SLED.grammar.ExternalGraphic = {
@@ -98,24 +127,129 @@ SLED.grammar.OnlineResource = {
 };
 SLED.grammar.Format = {
 	title: "Format",
+	val: "image/png"
 };
 SLED.grammar.WellKnownName = {
 	title: "WellKnownName",
 	val: "circle",
 	size: 30
 };
+SLED.grammar.Label = {
+	title: "Label",
+	content: [
+		{	name: "PropertyName",	mult: [0,1] }
+	]
+};
+SLED.grammar.LabelPlacement = {
+	title: "LabelPlacement",
+	content: [
+		{	name: "PointPlacement",	mult: [0,1] },
+		{	name: "LinePlacement",	mult: [0,1] }
+	]
+};
+SLED.grammar.PointPlacement = {
+	title: "PointPlacement",
+	content: [
+		{	name: "AnchorPoint",	mult: [0,1] },
+		{	name: "Displacement",	mult: [0,1] },
+		{	name: "Rotation",	mult: [0,1] }
+	]
+};
+SLED.grammar.AnchorPoint = {
+	title: "AnchorPoint",
+	content: [
+		{	name: "AnchorPointX",	mult: [1,1] },
+		{	name: "AnchorPointY",	mult: [1,1] }
+	]
+};
+SLED.grammar.Displacement = {
+	title: "Displacement",
+	content: [
+		{	name: "DisplacementX",	mult: [1,1] },
+		{	name: "DisplacementY",	mult: [1,1] }
+	]
+};
+
+SLED.grammar.LinePlacement = {
+	title: "LinePlacement",
+	content: [
+		{	name: "PerpendicularOffset",	mult: [1,1] }
+	]
+};
+
+SLED.grammar.Font = {
+	title: "Font",
+	content: [
+		{	name: "FontFamily",	mult: [0,1] },
+		{	name: "FontStyle",	mult: [0,1] },
+		{	name: "FontWeight",	mult: [0,1] },
+		{	name: "FontSize",	mult: [0,1] }
+	]
+};
+
+SLED.grammar.AnchorPointX = {
+	title: "AnchorPointX",
+	val: ".5",
+	size: 5
+};
+SLED.grammar.AnchorPointY = {
+	title: "AnchorPointY",
+	val: ".5",
+	size: 5
+};
+SLED.grammar.DisplacementX = {
+	title: "DisplacementX",
+	val: "0",
+	size: 5
+};
+SLED.grammar.DisplacementY = {
+	title: "DisplacementY",
+	val: "0",
+	size: 5
+};
+SLED.grammar.Halo = {
+	title: "Halo",
+	val: "1"
+};
+SLED.grammar.Priority = {
+	title: "Priority",
+	val: "1000"
+};
+SLED.grammar.FontFamily = {
+	title: "family",
+	css: "font-family",
+	val: "Arial"
+};
+SLED.grammar.FontStyle = {
+	title: "style",
+	css: "font-style",
+	val: "italic"
+};
+SLED.grammar.FontWeight = {
+	title: "weight",
+	css: "font-weight",
+	val: "bold"
+};
+SLED.grammar.FontSize = {
+	title: "size",
+	css: "font-size",
+	val: "10"
+};
 SLED.grammar.Opacity = {
 	title: "Opacity",
+	val: "1"
 };
 SLED.grammar.Size = {
 	title: "Size",
+	val: "10"
 };
 SLED.grammar.Rotation = {
 	title: "Rotation",
+	val: "0"
 };
 SLED.grammar.MinScale = {
 	title: "MinScale",
-	val: "",
+	val: "0",
 	size: 7
 };
 SLED.grammar.MaxScale = {
@@ -134,34 +268,57 @@ SLED.grammar.Abstract = {
 };
 SLED.grammar.FillColor = {
 	title: "color",
+	css: "fill",
 	val: "#000000",
 	size: 7
 };
+SLED.grammar.FillOpacity = {
+	title: "opacity",
+	css: "fill-opacity",
+	val: "1",
+	size: 5
+};
 SLED.grammar.StrokeColor = {
 	title: "color",
+	css: "stroke",
 	val: "#000000",
 	size: 7
 };
 SLED.grammar.Width = {
-	title: "width"
+	title: "width",
+	css: "stroke-width",
+	val: "1"
 };
 SLED.grammar.StrokeOpacity = {
 	title: "opacity",
+	css: "stroke-opacity",
 	val: "1",
 	size: 5
 };
 SLED.grammar.LineJoin = {
-	title: "linejoin"
+	title: "linejoin",
+	css: "stroke-linejoin",
+	val: "round"
 };
 SLED.grammar.LineCap = {
-	title: "linecap"
+	title: "linecap",
+	css: "stroke-linecap",
+	val: "round"
 };
 SLED.grammar.DashArray = {
-	title: "dasharray"
+	title: "dasharray",
+	css: "stroke-dasharray",
+	val: "5 2"
 };
 SLED.grammar.DashOffset = {
-	title: "dashoffset"
+	title: "dashoffset",
+	css: "stroke-dashoffset",
+	val: "0"
 };
 SLED.grammar.PerpendicularOffset = {
-	title: "PerpendicularOffset"
+	title: "PerpendicularOffset",
+	val: "1"
+};
+SLED.grammar.PropertyName = {
+	title: "PropertyName"
 };
