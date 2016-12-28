@@ -6,7 +6,8 @@ SLED.render = function($parent, refOrName) {
 	var isBlock = rule.content;
 	var clzLayout = isBlock ? "type-block" : "type-value";
 	var $obj = $('<div>')
-		.addClass(clzLayout);
+		.addClass(clzLayout)
+		.attr('sld-name', ref.name);
 		
 	var clzDepth = 'depth-even';
 	if ($parent.parent().hasClass('depth-even')) {
@@ -59,11 +60,12 @@ SLED.renderDelete = function($obj, ref) {
 }
 SLED.renderValue = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
-	$('<div class="option-value">')
+	$item = $('<div class="option-value">')
 		.append( SLED.renderDelete($obj, ref) )
-		.append( $('<span class="value-title">').text( rule.title ) ) 
-		.append( $('<input type="text">') )
+		.append( $('<span class="value-title">').text( rule.title ) )
 		.appendTo($obj);
+		
+	$('<input type="text" class="value-val">').appendTo($item).focus(); 
 }
 SLED.renderMenuRef = function($obj, $menu, ref) {
 	var rule = SLED.grammar[ref.name];
@@ -123,4 +125,50 @@ Ref.toRef = function(refOrName) {
 		return { name: refOrName, mult: [1,1] };
 	}
 	return refOrName;
+}
+SLED.INDENT = '  ';
+SLED.generate = function($gui, $doc) {
+	$doc.empty();
+	$('<p>').text('<SLD>').appendTo($doc);
+	
+	$sld = $gui.find('[sld-name]:first');
+	gen($sld, 0);
+	
+	$('<p>').text('</SLD>').appendTo($doc);
+	
+	function gen($parent, indent) {
+		indent = indent + 1;
+		var indTxt = '&nbsp;'.repeat(indent);
+		var $contents = $parent.children();
+		$contents.each(function(i, e) {
+			var $e = $(e);
+			var name = $e.attr('sld-name');
+			if (! name) {
+				gen($e, indent);
+			} 
+			else {
+				if ($e.hasClass('type-block')) {
+					$('<p>')
+						.append(indTxt)
+						.append('&lt;'+name+'&gt;')
+						.appendTo($doc);
+					gen($e, indent);
+					$('<p>')
+						.append(indTxt)
+						.append('&lt;/'+name+'&gt;')
+						.appendTo($doc);
+				}
+				else {
+					var input = $e.find('.value-val');
+					var val = $(input).val();
+					if (val.length <= 0) return;
+					var txt = '&lt;'+name+'&gt;' + val + '&lt;/'+name+'&gt;';
+					$('<p>')
+						.append(indTxt)
+						.append(txt)
+						.appendTo($doc);
+				}
+			}
+		})
+	}
 }

@@ -9,6 +9,10 @@ h2 {
 input {
 	border-color: white;
 }
+.header {
+	background: #cccccc;
+	padding: 5px;
+}
 .gui {
 	display: inline-block;
 	background: #cccccc;
@@ -16,7 +20,11 @@ input {
 }
 .doc {
 	display: inline-block;
-	
+	font-family: monospace;	
+	vertical-align: top;
+}
+.doc p {
+	margin: 0px;
 }
 .sld-doc {
 	background: #eeeeee;
@@ -81,3 +89,5 @@ input {
 .ctl-delete:hover {
 	color: darkred;
 }
+
+

@@ -4,14 +4,19 @@
 </head>
 <body>
 
-<div class='gui'>
+<div class='header'>
+SLED
+<button id='generate'>Generate</button>
+</div>
+<div class='gui' id='gui'>
 
 	<div class='doc-root'>
 	</div>
 
 </div>
 
-<div class='doc'>
+<div class='doc' id='doc'>
+
 </div>
 
 <script
@@ -21,9 +26,13 @@
 <script src="sled-grammar.js"></script>  
 <script src="sled.js"></script>  
 <script>
-	$( document ).ready(function() {
-		SLED.render($('.doc-root'), 'root');
-	})
+$( document ).ready(function() {
+
+	$('#generate').click(function() { SLED.generate( $('#gui'), $('#doc') ); } );
+	
+	SLED.render($('.doc-root'), 'root');
+});
+	
 </script>  
 
 </body>

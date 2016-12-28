@@ -29,20 +29,20 @@ SLED.grammar.Rule = {
 	]
 };
 SLED.grammar.PointSymbolizer = {
-	title: "PointSymbolizer",
+	title: "Point",
 	content: [
 		{	name: "stuff",	mult: [0,1] }
 	]
 };
 SLED.grammar.LineSymbolizer = {
-	title: "LineSymbolizer",
+	title: "Line",
 	content: [
 		{	name: "Stroke",	mult: [1,1] },
 		{	name: "PerpendicularOffset",	mult: [0,1] }
 	]
 };
 SLED.grammar.PolygonSymbolizer = {
-	title: "PolygonSymbolizer",
+	title: "Polygon",
 	content: [
 		{	name: "Fill",	mult: [0,1] },
 		{	name: "Stroke",	mult: [0,1] }
