@@ -65,20 +65,34 @@ SLED.renderValue = function($obj, ref) {
 		.append( $('<span class="value-title">').text( rule.title ) )
 		.appendTo($obj);
 		
-	$('<input type="text" class="value-val">').appendTo($item).focus(); 
+	var $input = $('<input type="text" class="value-val">').appendTo($item).focus(); 
+	if (rule.val) {
+		$input.val(rule.val);
+	}
+	if (rule.size) {
+		$input.attr('size', rule.size);
+	}
 }
 SLED.renderMenuRef = function($obj, $menu, ref) {
 	var rule = SLED.grammar[ref.name];
+	if (! rule) {
+		console.log('Missing rule: ' + ref.name);
+	}
 	var isList = ref.mult[0] >= 0 && ref.mult[1] > 1;
 	var isSingleton = ref.mult[1] == 1;
 	
 	var clz = "ctl-add";
-	if (isSingleton) { clz = "ctl-option"; }
-
+	var title = rule.title + '*';
+	if (isSingleton) { 
+		clz = "ctl-option"; 
+		title = rule.title;
+	}
+	
+	
 	var $btn = $('<span>')
 		.addClass("menu-item")
 		.addClass(clz)
-		.text(rule.title);
+		.text(title);
 	$btn.click(function() {
 		SLED.render( SLED.findElement($menu.parent().parent(), ref.name), ref);
 		if (isSingleton) {
