@@ -85,28 +85,28 @@ SLED.grammar.Abstract = {
 	title: "Abstract"
 };
 SLED.grammar.FillColor = {
-	title: "fill"
+	title: "color"
 };
 SLED.grammar.StrokeColor = {
-	title: "stroke"
+	title: "color"
 };
 SLED.grammar.Width = {
-	title: "Width"
+	title: "width"
 };
 SLED.grammar.Opacity = {
-	title: "Opacity"
+	title: "opacity"
 };
 SLED.grammar.LineJoin = {
-	title: "LineJoin"
+	title: "linejoin"
 };
 SLED.grammar.LineCap = {
-	title: "LineCap"
+	title: "linecap"
 };
 SLED.grammar.DashArray = {
-	title: "DashArray"
+	title: "dasharray"
 };
 SLED.grammar.DashOffset = {
-	title: "dash-offset"
+	title: "dashoffset"
 };
 SLED.grammar.PerpendicularOffset = {
 	title: "PerpendicularOffset"

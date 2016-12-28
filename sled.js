@@ -36,14 +36,7 @@ SLED.renderBlock = function($obj, ref) {
 		var refContent = rule.content[i];
 		SLED.renderMenuRef($obj, $menu, refContent);
 	}
-	if ( Ref.isOpt(ref) || Ref.isMany(ref) )  {
-		var $del = $('<span class="ctl-delete">').text('X');
-		$del.click(function() {
-			SLED.menuShow($obj, ref.name);
-			$obj.remove();
-		});
-		$hdr.append($del);
-	}
+	$hdr.append( SLED.renderDelete($obj, ref));
 	$hdr.append($title);
 	$hdr.append($menu);
 	$obj.append($hdr);
@@ -53,10 +46,22 @@ SLED.renderBlock = function($obj, ref) {
 		SLED.renderRefMarker( $obj, refContent );
 	}
 }
+SLED.renderDelete = function($obj, ref) {
+	var $del = null;
+	if ( Ref.isOpt(ref) || Ref.isMany(ref) )  {
+		$del = $('<span class="ctl-delete">').text('x');
+		$del.click(function() {
+			SLED.menuShow($obj, ref.name);
+			$obj.remove();
+		});
+	}
+	return $del;
+}
 SLED.renderValue = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
-	 $('<div class="option-value">')
-		.text( rule.title )
+	$('<div class="option-value">')
+		.append( SLED.renderDelete($obj, ref) )
+		.append( $('<span class="value-title">').text( rule.title ) ) 
 		.append( $('<input type="text">') )
 		.appendTo($obj);
 }
