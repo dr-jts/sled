@@ -54,6 +54,18 @@ input {
 	font-family: monospace;
     font-size: 14px;
 }
+.color-swatch {
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid black;
+	margin-left: 2px;
+	vertical-align: middle;
+}
+.color-error {
+	background: transparent;
+	border: 1px solid red;
+}
 .depth-odd {
 	background: #d8d8d8;
 }

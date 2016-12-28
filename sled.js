@@ -72,6 +72,22 @@ SLED.renderValue = function($obj, ref) {
 	if (rule.size) {
 		$input.attr('size', rule.size);
 	}
+	if (rule.type && rule.type == 'color') {
+		var $clr = $('<div class="color-swatch">')
+			.css('background-color', rule.val)
+			.appendTo($item);
+		$input.bind('keyup change', function() {
+			var clr = $input.val();
+			if (clr.length == 6) {
+				$clr.css('background-color', clr);
+				$clr.removeClass('color-error');
+			}
+			else {
+				$clr.css('background-color', '');
+				$clr.addClass('color-error');
+			}
+		});
+	}
 }
 SLED.renderMenuRef = function($obj, $menu, ref) {
 	var rule = SLED.grammar[ref.name];
@@ -126,7 +142,16 @@ SLED.findElement = function($e, name) {
 	var elts = $e.find('.element-'+name + ':first');
 	return elts;
 }
+SLED.expandVal = function(val, rule) {
+	if (rule.type) {
+		if (rule.type == 'color') {
+			return val.startsWith('#') ? val : '#' + val;
+		}
+	}
+	return val;
+}
 //==============================================================================
+
 Ref = {};
 Ref.isMany = function(ref) {
 	return ref.mult[1] > 1;
@@ -182,23 +207,32 @@ SLED.generate = function($gui, $doc) {
 		})
 	}
 	function genVal($e, sldName, indentText) {
+		var rule = SLED.grammar[ sldName ];
+		
+		var val = getVal($e, rule);
 		var input = $e.find('.value-val');
 		var val = $(input).val();
 		if (val.length <= 0) return;
 		
-		var rule = SLED.grammar[ sldName ];
+		val = SLED.expandVal(val, rule);
+		
 		var txt;
 		if (rule.css) {
 			txt = '&lt;CssParameter name="' + rule.css + '"&gt;'
-				+ val + '&lt;/CssParameter&gt;';
+				+ val 
+				+ '&lt;/CssParameter&gt;';
 		}
 		else {
 			txt = '&lt;' + sldName + '&gt;' 
-				+ val + '&lt;/' + sldName + '&gt;';
+				+ val 
+				+ '&lt;/' + sldName + '&gt;';
 		}
 		$('<p>')
 			.append(indentText)
 			.append(txt)
 			.appendTo($doc);
+	}
+	function getVal($e, rule) {
+		
 	}
 }

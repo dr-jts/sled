@@ -268,9 +268,10 @@ SLED.grammar.Abstract = {
 };
 SLED.grammar.FillColor = {
 	title: "color",
+	type: "color",
 	css: "fill",
-	val: "#000000",
-	size: 7
+	val: "000000",
+	size: 6
 };
 SLED.grammar.FillOpacity = {
 	title: "opacity",
@@ -280,9 +281,10 @@ SLED.grammar.FillOpacity = {
 };
 SLED.grammar.StrokeColor = {
 	title: "color",
+	type: "color",
 	css: "stroke",
-	val: "#000000",
-	size: 7
+	val: "000000",
+	size: 6
 };
 SLED.grammar.Width = {
 	title: "width",
@@ -292,13 +294,14 @@ SLED.grammar.Width = {
 SLED.grammar.StrokeOpacity = {
 	title: "opacity",
 	css: "stroke-opacity",
-	val: "1",
-	size: 5
+	size: 5,
+	val: "1"
 };
 SLED.grammar.LineJoin = {
 	title: "linejoin",
 	css: "stroke-linejoin",
-	val: "round"
+	val: "round",
+	size: 6
 };
 SLED.grammar.LineCap = {
 	title: "linecap",
