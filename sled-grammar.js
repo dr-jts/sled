@@ -82,7 +82,7 @@ SLED.grammar.Fill = {
 SLED.grammar.GraphicFill = {
 	title: "GraphicFill",
 	content: [
-		{	name: "Graphic",	mult: [0,1] }
+		{	name: "Graphic",	mult: [1,1] }
 	]
 };
 SLED.grammar.Stroke = {
@@ -173,7 +173,7 @@ SLED.grammar.Displacement = {
 SLED.grammar.LinePlacement = {
 	title: "LinePlacement",
 	content: [
-		{	name: "PerpendicularOffset",	mult: [0,1] }
+		{	name: "PerpendicularOffset",	mult: [1,1] }
 	]
 };
 
@@ -216,23 +216,23 @@ SLED.grammar.Priority = {
 	val: "1000"
 };
 SLED.grammar.FontFamily = {
-	title: "font-family",
-	val: "Arial"
-};
-SLED.grammar.FontFamily = {
-	title: "font-family",
+	title: "family",
+	css: "font-family",
 	val: "Arial"
 };
 SLED.grammar.FontStyle = {
-	title: "font-style",
+	title: "style",
+	css: "font-style",
 	val: "italic"
 };
 SLED.grammar.FontWeight = {
-	title: "font-weight",
+	title: "weight",
+	css: "font-weight",
 	val: "bold"
 };
 SLED.grammar.FontSize = {
-	title: "font-size",
+	title: "size",
+	css: "font-size",
 	val: "10"
 };
 SLED.grammar.Opacity = {
@@ -268,42 +268,51 @@ SLED.grammar.Abstract = {
 };
 SLED.grammar.FillColor = {
 	title: "color",
+	css: "fill",
 	val: "#000000",
 	size: 7
 };
 SLED.grammar.FillOpacity = {
 	title: "opacity",
+	css: "fill-opacity",
 	val: "1",
 	size: 5
 };
 SLED.grammar.StrokeColor = {
 	title: "color",
+	css: "stroke",
 	val: "#000000",
 	size: 7
 };
 SLED.grammar.Width = {
 	title: "width",
+	css: "stroke-width",
 	val: "1"
 };
 SLED.grammar.StrokeOpacity = {
 	title: "opacity",
+	css: "stroke-opacity",
 	val: "1",
 	size: 5
 };
 SLED.grammar.LineJoin = {
 	title: "linejoin",
+	css: "stroke-linejoin",
 	val: "round"
 };
 SLED.grammar.LineCap = {
 	title: "linecap",
+	css: "stroke-linecap",
 	val: "round"
 };
 SLED.grammar.DashArray = {
 	title: "dasharray",
+	css: "stroke-dasharray",
 	val: "5 2"
 };
 SLED.grammar.DashOffset = {
 	title: "dashoffset",
+	css: "stroke-dashoffset",
 	val: "0"
 };
 SLED.grammar.PerpendicularOffset = {
