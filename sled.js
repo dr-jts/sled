@@ -73,6 +73,8 @@ SLED.renderValue = function($obj, ref) {
 		$input.attr('size', rule.size);
 	}
 	if (rule.type && rule.type == 'color') {
+		var $clrInput = $('<input type="color">')
+			.appendTo($item);
 		var $clr = $('<div class="color-swatch">')
 			.css('background-color', rule.val)
 			.appendTo($item);
@@ -81,11 +83,18 @@ SLED.renderValue = function($obj, ref) {
 			if (clr.length == 6) {
 				$clr.css('background-color', clr);
 				$clr.removeClass('color-error');
+				$clrInput.val('#'+clr);
 			}
 			else {
 				$clr.css('background-color', '');
 				$clr.addClass('color-error');
 			}
+		});
+		$clrInput.bind('change', function() {
+			var clr = $clrInput.val();
+			$input.val(clr.substr(1));
+			$clr.css('background-color', clr);
+			$clr.removeClass('color-error');
 		});
 	}
 }
