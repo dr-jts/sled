@@ -1,9 +1,25 @@
 SLED = {};
 SLED.grammar = {};
 SLED.grammar.root = {
-	title: "SLD",
+	title: "StyledLayerDescriptor",
 	content: [
-		{ name: "FeatureTypeStyle",	mult: [0,99] }
+		{ name: "NamedLayer",	mult: [0,99] }
+	]
+};
+SLED.grammar.NamedLayer = {
+	title: "NamedLayer",
+	content: [
+		{ name: "Name",	mult: [1,1] },
+		{ name: "UserStyle",	mult: [0,99] }
+	]
+};
+SLED.grammar.UserStyle = {
+	title: "UserStyle",
+	content: [
+		{ name: "Name",	mult: [0,1] },
+		{ name: "Title",	mult: [0,1] },
+		{ name: "Abstract",	mult: [0,1] },
+		{ name: "FeatureTypeStyle",	mult: [1,99] }
 	]
 };
 SLED.grammar.FeatureTypeStyle = {

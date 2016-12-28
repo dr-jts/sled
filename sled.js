@@ -180,12 +180,12 @@ Ref.toRef = function(refOrName) {
 SLED.INDENT = '  ';
 SLED.generate = function($gui, $doc) {
 	$doc.empty();
-	$('<p>').text('<SLD>').appendTo($doc);
+	$('<p>').text('<StyledLayerDescriptor>').appendTo($doc);
 	
 	$sld = $gui.find('[sld-name]:first');
 	gen($sld, 0);
 	
-	$('<p>').text('</SLD>').appendTo($doc);
+	$('<p>').text('</StyledLayerDescriptor>').appendTo($doc);
 	
 	function gen($parent, indent) {
 		indent = indent + 1;
