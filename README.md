@@ -5,4 +5,5 @@ for the [Geoserver dialect](http://docs.geoserver.org/stable/en/user/styling/sld
 of the [Styled Layer Description](http://www.opengeospatial.org/standards/sld) 
 (SLD) language.
 
+[Try it!](https://dr-jts.github.io/sled)
 
