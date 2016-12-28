@@ -237,15 +237,15 @@ SLED.grammar.FontSize = {
 };
 SLED.grammar.Opacity = {
 	title: "Opacity",
-};
-SLED.grammar.Opacity = {
-	title: "Opacity",
+	val: "1"
 };
 SLED.grammar.Size = {
 	title: "Size",
+	val: "10"
 };
 SLED.grammar.Rotation = {
 	title: "Rotation",
+	val: "0"
 };
 SLED.grammar.MinScale = {
 	title: "MinScale",
@@ -318,4 +318,7 @@ SLED.grammar.DashOffset = {
 SLED.grammar.PerpendicularOffset = {
 	title: "PerpendicularOffset",
 	val: "1"
+};
+SLED.grammar.PropertyName = {
+	title: "PropertyName"
 };
