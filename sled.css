@@ -58,13 +58,13 @@ input {
 	width: 18px;
 	height: 18px;
 	display: inline-block;
-	border: 1px solid black;
-	margin-left: 2px;
+	border: 3px solid white;
+	margin-left: 5px;
 	vertical-align: middle;
 }
 .color-error {
 	background: transparent;
-	border: 1px solid red;
+	border-color: red;
 }
 .depth-odd {
 	background: #d8d8d8;

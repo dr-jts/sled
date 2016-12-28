@@ -73,6 +73,8 @@ SLED.renderValue = function($obj, ref) {
 		$input.attr('size', rule.size);
 	}
 	if (rule.type && rule.type == 'color') {
+		var $clrInput = $('<input type="color">')
+			.appendTo($item);
 		var $clr = $('<div class="color-swatch">')
 			.css('background-color', rule.val)
 			.appendTo($item);
@@ -81,11 +83,18 @@ SLED.renderValue = function($obj, ref) {
 			if (clr.length == 6) {
 				$clr.css('background-color', clr);
 				$clr.removeClass('color-error');
+				$clrInput.val('#'+clr);
 			}
 			else {
 				$clr.css('background-color', '');
 				$clr.addClass('color-error');
 			}
+		});
+		$clrInput.bind('change', function() {
+			var clr = $clrInput.val();
+			$input.val(clr.substr(1));
+			$clr.css('background-color', clr);
+			$clr.removeClass('color-error');
 		});
 	}
 }
@@ -171,12 +180,12 @@ Ref.toRef = function(refOrName) {
 SLED.INDENT = '  ';
 SLED.generate = function($gui, $doc) {
 	$doc.empty();
-	$('<p>').text('<SLD>').appendTo($doc);
+	$('<p>').text('<StyledLayerDescriptor>').appendTo($doc);
 	
 	$sld = $gui.find('[sld-name]:first');
 	gen($sld, 0);
 	
-	$('<p>').text('</SLD>').appendTo($doc);
+	$('<p>').text('</StyledLayerDescriptor>').appendTo($doc);
 	
 	function gen($parent, indent) {
 		indent = indent + 1;
