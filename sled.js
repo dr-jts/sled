@@ -23,7 +23,6 @@ SLED.render = function($parent, refOrName) {
 		SLED.renderValue($obj, ref);
 	}
 }
-
 SLED.renderBlock = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
 	var isOpt = ref.mult[0] == 0;
@@ -42,9 +41,10 @@ SLED.renderBlock = function($obj, ref) {
 	$hdr.append($menu);
 	$obj.append($hdr);
 	
+	//render content markers in order
 	for (var i = 0; i < rule.content.length; i++) {
 		var refContent = rule.content[i];
-		SLED.renderRefMarker( $obj, refContent );
+		SLED.renderMarker( $obj, refContent );
 	}
 }
 SLED.renderDelete = function($obj, ref, rule) {
@@ -136,7 +136,7 @@ SLED.menuShow = function($obj, name) {
 	var $ref = $menu.find(':contains(' + name + ')');
 	$ref.show();
 }
-SLED.renderRefMarker = function($block, ref) {
+SLED.renderMarker = function($block, ref) {
 	var rule = SLED.grammar[ref.name];
 	var isMand = ref.mult[0] > 0;
 	var clzMarker = 'element-'+ref.name;
