@@ -7,7 +7,7 @@ SLED.render = function($parent, refOrName) {
 	var clzLayout = isBlock ? "type-block" : "type-value";
 	var $obj = $('<div>')
 		.addClass(clzLayout)
-		.attr('sld-name', ref.name);
+		.attr('rule-name', ref.name);
 		
 	var clzDepth = 'depth-even';
 	if ($parent.parent().hasClass('depth-even')) {
@@ -188,7 +188,7 @@ SLED.generate = function($gui, $doc) {
 	$('<p>').text('  xmlns:xlink="http://www.w3.org/1999/xlink" ').appendTo($doc);
 	$('<p>').text('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">').appendTo($doc);
 	
-	$sld = $gui.find('[sld-name]:first');
+	$sld = $gui.find('[rule-name]:first');
 	gen($sld, 0);
 	
 	$('<p>').text('</StyledLayerDescriptor>').appendTo($doc);
@@ -199,7 +199,7 @@ SLED.generate = function($gui, $doc) {
 		var $contents = $parent.children();
 		$contents.each(function(i, e) {
 			var $e = $(e);
-			var sldName = $e.attr('sld-name');
+			var sldName = $e.attr('rule-name');
 			if (! sldName) {
 				gen($e, indent);
 			} 
@@ -224,6 +224,7 @@ SLED.generate = function($gui, $doc) {
 	function genVal($e, ruleName, indentText) {
 		var rule = SLED.grammar[ ruleName ];
 		var val = formVal($e, rule);
+		
 		var fGenVal = genValElement;
 		if (rule.css) fGenVal = genValCSS;
 		if (rule.template) fGenVal = genValTemplate;
