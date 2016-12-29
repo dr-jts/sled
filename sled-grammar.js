@@ -138,6 +138,7 @@ SLED.grammar.Mark = {
 };
 SLED.grammar.OnlineResource = {
 	title: "OnlineResource",
+	template: '<OnlineResource  xlink:type="simple" xlink:href="$val" />',
 	val: "http://"
 	
 };

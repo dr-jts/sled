@@ -180,7 +180,13 @@ Ref.toRef = function(refOrName) {
 SLED.INDENT = '  ';
 SLED.generate = function($gui, $doc) {
 	$doc.empty();
-	$('<p>').text('<StyledLayerDescriptor>').appendTo($doc);
+	$('<p>').text('<?xml version="1.0" encoding="ISO-8859-1"?>').appendTo($doc);
+	$('<p>').text('<StyledLayerDescriptor version="1.0.0"').appendTo($doc);
+	$('<p>').text('  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"').appendTo($doc);
+	$('<p>').text('  xmlns="http://www.opengis.net/sld" ').appendTo($doc);
+	$('<p>').text('  xmlns:ogc="http://www.opengis.net/ogc" ').appendTo($doc);
+	$('<p>').text('  xmlns:xlink="http://www.w3.org/1999/xlink" ').appendTo($doc);
+	$('<p>').text('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">').appendTo($doc);
 	
 	$sld = $gui.find('[sld-name]:first');
 	gen($sld, 0);
@@ -215,33 +221,48 @@ SLED.generate = function($gui, $doc) {
 			}
 		})
 	}
-	function genVal($e, sldName, indentText) {
-		var rule = SLED.grammar[ sldName ];
+	function genVal($e, ruleName, indentText) {
+		var rule = SLED.grammar[ ruleName ];
+		var val = formVal($e, rule);
+		var fGenVal = genValElement;
+		if (rule.css) fGenVal = genValCSS;
+		if (rule.template) fGenVal = genValTemplate;
 		
-		var val = getVal($e, rule);
+		var txt = fGenVal(val, ruleName, rule);
+		$('<p>')
+			.append(indentText)
+			.append( htmlEscape(txt) )
+			.appendTo($doc);
+	}
+	function genValElement(val, sldName, rule) {
+		return '<' + sldName + '>' 
+				+ val 
+				+ '</' + sldName + '>';
+	}
+	function genValCSS(val, sldName, rule) {
+		return '<CssParameter name="' + rule.css + '">'
+				+ val 
+				+ '</CssParameter>';
+	}
+	function genValTemplate(val, sldName, rule) {
+		var template = rule.template;
+		var txt = template.replace('$val', val);
+		return txt;
+	}
+	function formVal($e, rule) {
 		var input = $e.find('.value-val');
 		var val = $(input).val();
 		if (val.length <= 0) return;
 		
 		val = SLED.expandVal(val, rule);
-		
-		var txt;
-		if (rule.css) {
-			txt = '&lt;CssParameter name="' + rule.css + '"&gt;'
-				+ val 
-				+ '&lt;/CssParameter&gt;';
-		}
-		else {
-			txt = '&lt;' + sldName + '&gt;' 
-				+ val 
-				+ '&lt;/' + sldName + '&gt;';
-		}
-		$('<p>')
-			.append(indentText)
-			.append(txt)
-			.appendTo($doc);
+		return val;
 	}
-	function getVal($e, rule) {
-		
+	function htmlEscape(str) {
+		return str
+			.replace(/&/g, '&amp;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
 	}
 }
