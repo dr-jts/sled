@@ -255,6 +255,8 @@ SLED.generate = function($gui, $doc) {
 	function genVal($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var val = formVal($e, rule);
+		// skip empty values
+		if (! val || val.length == 0) return;
 		
 		var fGenVal = genValElement;
 		if (rule.css) fGenVal = genValCSS;
