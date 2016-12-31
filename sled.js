@@ -226,7 +226,7 @@ SLED.generate = function($gui, $doc) {
 	}
 	function gen($parent, indent) {
 		indent = indent + 1;
-		var indentText = ' '.repeat(indent);
+		//var indentText = ' '.repeat(indent);
 		var $contents = $parent.children();
 		$contents.each(function(i, e) {
 			var $e = $(e);
@@ -236,23 +236,23 @@ SLED.generate = function($gui, $doc) {
 			} 
 			else {
 				if ($e.hasClass('type-block')) {
-					genBlock($e, ruleName, indent, indentText)
+					genBlock($e, ruleName, indent)
 				}
 				else { 
-					genVal($e, ruleName, indentText);
+					genVal($e, ruleName, indent);
 				}
 			}
 		})
 	}
-	function genBlock($e, ruleName, indent, indentText) {
+	function genBlock($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var tag = rule.tag ? rule.tag : ruleName;
 		var pref = rule.prefix ? rule.prefix+":" : "";
-		line(indentText + '<' + pref + tag + '>');
+		line('<' + pref + tag + '>', indent);
 		gen($e, indent);
-		line(indentText + '</' + pref + tag + '>');		
+		line('</' + pref + tag + '>', indent);		
 	}
-	function genVal($e, ruleName, indentText) {
+	function genVal($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var val = formVal($e, rule);
 		
@@ -261,7 +261,7 @@ SLED.generate = function($gui, $doc) {
 		if (rule.template) fGenVal = genValTemplate;
 		
 		var txt = fGenVal(val, ruleName, rule);
-		line(indentText + txt);
+		line(txt, indent);
 	}
 	function genValElement(val, ruleName, rule) {
 		var pref = rule.prefix ? rule.prefix+":" : "";
