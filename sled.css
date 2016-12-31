@@ -54,6 +54,9 @@ input {
 	font-family: monospace;
     font-size: 14px;
 }
+.value-title {
+	margin-right: 5px;
+}
 .color-swatch {
 	width: 18px;
 	height: 18px;
