@@ -308,7 +308,8 @@ SLED.grammar.FontSize = {
 };
 SLED.grammar.Opacity = {
 	title: "Opacity",
-	val: "1"
+	val: "1",
+	size: 4
 };
 SLED.grammar.Size = {
 	title: "Size",
@@ -342,55 +343,60 @@ SLED.grammar.FillColor = {
 	type: "color",
 	css: "fill",
 	val: "000000",
-	size: 6
+	size: 4
 };
 SLED.grammar.FillOpacity = {
 	title: "opacity",
 	css: "fill-opacity",
 	val: "1",
-	size: 5
+	size: 2
 };
 SLED.grammar.StrokeColor = {
 	title: "color",
 	type: "color",
 	css: "stroke",
 	val: "000000",
-	size: 6
+	size: 4
 };
 SLED.grammar.Width = {
 	title: "width",
 	css: "stroke-width",
+	size: 2,
 	val: "1"
 };
 SLED.grammar.StrokeOpacity = {
 	title: "opacity",
 	css: "stroke-opacity",
-	size: 5,
+	size: 2,
 	val: "1"
 };
 SLED.grammar.LineJoin = {
 	title: "linejoin",
 	css: "stroke-linejoin",
-	val: "round",
-	size: 6
+	size: 6,
+	val: "round"
 };
 SLED.grammar.LineCap = {
 	title: "linecap",
 	css: "stroke-linecap",
+	size: 6,
 	val: "round"
 };
 SLED.grammar.DashArray = {
 	title: "dasharray",
 	css: "stroke-dasharray",
+	size: 6,
 	val: "5 2"
 };
 SLED.grammar.DashOffset = {
 	title: "dashoffset",
 	css: "stroke-dashoffset",
+	size: 6,
 	val: "0"
 };
 SLED.grammar.PerpendicularOffset = {
 	title: "PerpendicularOffset",
+	size: 2,
 	val: "1"
 };
 SLED.grammar.PropertyName = {
