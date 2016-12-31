@@ -27,6 +27,9 @@ input {
 .doc p {
 	margin: 0px;
 }
+.doc-stale {
+	color: lightgray;
+}
 .sld-doc {
 	background: #eeeeee;
 	padding: 10px;
