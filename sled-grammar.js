@@ -172,7 +172,7 @@ SLED.grammar.Stroke = {
 SLED.grammar.GraphicStroke = {
 	title: "GraphicStroke",
 	content: [
-		{	name: "Graphic",	mult: [0,1] }
+		{	name: "Graphic",	mult: [1,1] }
 	]
 };
 SLED.grammar.ExternalGraphic = {
