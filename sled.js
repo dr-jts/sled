@@ -212,16 +212,6 @@ SLED.generate = function($gui, $doc) {
 	line('  xmlns:ogc="http://www.opengis.net/ogc" ')
 	line('  xmlns:xlink="http://www.w3.org/1999/xlink" ')
 	line('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">')
-
-	/*
-	$('<p>').text('<?xml version="1.0" encoding="ISO-8859-1"?>').appendTo($doc);
-	$('<p>').text('<StyledLayerDescriptor version="1.0.0"').appendTo($doc);
-	$('<p>').text('  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"').appendTo($doc);
-	$('<p>').text('  xmlns="http://www.opengis.net/sld" ').appendTo($doc);
-	$('<p>').text('  xmlns:ogc="http://www.opengis.net/ogc" ').appendTo($doc);
-	$('<p>').text('  xmlns:xlink="http://www.w3.org/1999/xlink" ').appendTo($doc);
-	$('<p>').text('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">').appendTo($doc);
-	*/
 	
 	$sld = $gui.find('[rule-name]:first');
 	gen($sld, 0);
@@ -239,21 +229,26 @@ SLED.generate = function($gui, $doc) {
 		var $contents = $parent.children();
 		$contents.each(function(i, e) {
 			var $e = $(e);
-			var sldName = $e.attr('rule-name');
-			if (! sldName) {
+			var ruleName = $e.attr('rule-name');
+			if (! ruleName) {
 				gen($e, indent);
 			} 
 			else {
 				if ($e.hasClass('type-block')) {
-					line(indentText + '<' + sldName + '>');
-					gen($e, indent);
-					line(indentText + '</'+sldName+'>');
+					genBlock($e, ruleName, indent, indentText)
 				}
 				else { 
-					genVal($e, sldName, indentText);
+					genVal($e, ruleName, indentText);
 				}
 			}
 		})
+	}
+	function genBlock($e, ruleName, indent, indentText) {
+		var rule = SLED.grammar[ ruleName ];
+		var pref = rule.prefix ? rule.prefix+":" : "";
+		line(indentText + '<' + pref + ruleName + '>');
+		gen($e, indent);
+		line(indentText + '</' + pref + ruleName + '>');		
 	}
 	function genVal($e, ruleName, indentText) {
 		var rule = SLED.grammar[ ruleName ];
@@ -267,9 +262,10 @@ SLED.generate = function($gui, $doc) {
 		line(indentText + txt);
 	}
 	function genValElement(val, sldName, rule) {
-		return '<' + sldName + '>' 
+		var pref = rule.prefix ? rule.prefix+":" : "";
+		return '<' + pref + sldName + '>' 
 				+ val 
-				+ '</' + sldName + '>';
+				+ '</' + pref + sldName + '>';
 	}
 	function genValCSS(val, sldName, rule) {
 		return '<CssParameter name="' + rule.css + '">'

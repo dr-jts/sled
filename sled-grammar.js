@@ -47,6 +47,7 @@ SLED.grammar.Rule = {
 	]
 };
 SLED.grammar.Filter = {
+	prefix: "ogc",
 	title: "Filter",
 	content: [
 		{	name: "And",	mult: [0,1] },
@@ -57,6 +58,7 @@ SLED.grammar.Filter = {
 	]
 };
 SLED.grammar.And = {
+	prefix: "ogc",
 	title: "And",
 	content: [
 		{	name: "PropertyIsLessThan",	mult: [0,1] },
@@ -66,6 +68,7 @@ SLED.grammar.And = {
 	]
 };
 SLED.grammar.PropertyIsLessThan = {
+	prefix: "ogc",
 	title: "<",
 	content: [
 		{	name: "PropertyName",	mult: [1,1] },
@@ -73,6 +76,7 @@ SLED.grammar.PropertyIsLessThan = {
 	]
 };
 SLED.grammar.PropertyIsLessThanOrEqualTo = {
+	prefix: "ogc",
 	title: "<=",
 	content: [
 		{	name: "PropertyName",	mult: [1,1] },
@@ -80,6 +84,7 @@ SLED.grammar.PropertyIsLessThanOrEqualTo = {
 	]
 };
 SLED.grammar.PropertyIsGreaterThan = {
+	prefix: "ogc",
 	title: ">",
 	content: [
 		{	name: "PropertyName",	mult: [1,1] },
@@ -87,6 +92,7 @@ SLED.grammar.PropertyIsGreaterThan = {
 	]
 };
 SLED.grammar.PropertyIsGreaterThanOrEqualTo = {
+	prefix: "ogc",
 	title: ">=",
 	content: [
 		{	name: "PropertyName",	mult: [1,1] },
@@ -94,9 +100,11 @@ SLED.grammar.PropertyIsGreaterThanOrEqualTo = {
 	]
 };
 SLED.grammar.PropertyName = {
+	prefix: "ogc",
 	title: "PropertyName"
 };
 SLED.grammar.Literal = {
+	prefix: "ogc",
 	title: "Literal"
 };
 SLED.grammar.PointSymbolizer = {
@@ -401,6 +409,4 @@ SLED.grammar.PerpendicularOffset = {
 	size: 2,
 	val: "1"
 };
-SLED.grammar.PropertyName = {
-	title: "PropertyName"
-};
+
