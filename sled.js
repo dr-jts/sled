@@ -196,6 +196,19 @@ SLED.regen = function() {
 SLED.generate = function($gui, $doc) {
 	$doc.empty();
 	$('#doc').removeClass('doc-stale');
+	
+	var $t = $('<table>').appendTo($doc);
+	var lineNum = 1;
+	
+	line('<?xml version="1.0" encoding="ISO-8859-1"?>');
+	line('<StyledLayerDescriptor version="1.0.0"')
+	line('  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"')
+	line('  xmlns="http://www.opengis.net/sld" ')
+	line('  xmlns:ogc="http://www.opengis.net/ogc" ')
+	line('  xmlns:xlink="http://www.w3.org/1999/xlink" ')
+	line('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">')
+
+	/*
 	$('<p>').text('<?xml version="1.0" encoding="ISO-8859-1"?>').appendTo($doc);
 	$('<p>').text('<StyledLayerDescriptor version="1.0.0"').appendTo($doc);
 	$('<p>').text('  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"').appendTo($doc);
@@ -203,15 +216,21 @@ SLED.generate = function($gui, $doc) {
 	$('<p>').text('  xmlns:ogc="http://www.opengis.net/ogc" ').appendTo($doc);
 	$('<p>').text('  xmlns:xlink="http://www.w3.org/1999/xlink" ').appendTo($doc);
 	$('<p>').text('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">').appendTo($doc);
+	*/
 	
 	$sld = $gui.find('[rule-name]:first');
 	gen($sld, 0);
 	
-	$('<p>').text('</StyledLayerDescriptor>').appendTo($doc);
+	line('</StyledLayerDescriptor>')
 	
+	function line(txt) {
+		$('<tr>').appendTo($t)
+			.append( $('<td class="doc-linenum">').text( lineNum++ ) )
+			.append( $('<td class="doc-line">').text( txt ) );
+	}
 	function gen($parent, indent) {
 		indent = indent + 1;
-		var indentText = '&nbsp;'.repeat(indent);
+		var indentText = ' '.repeat(indent);
 		var $contents = $parent.children();
 		$contents.each(function(i, e) {
 			var $e = $(e);
@@ -221,15 +240,9 @@ SLED.generate = function($gui, $doc) {
 			} 
 			else {
 				if ($e.hasClass('type-block')) {
-					$('<p>')
-						.append(indentText)
-						.append('&lt;' + sldName + '&gt;')
-						.appendTo($doc);
+					line(indentText + '<' + sldName + '>');
 					gen($e, indent);
-					$('<p>')
-						.append(indentText)
-						.append('&lt;/'+sldName+'&gt;')
-						.appendTo($doc);
+					line(indentText + '</'+sldName+'>');
 				}
 				else { 
 					genVal($e, sldName, indentText);
@@ -246,10 +259,7 @@ SLED.generate = function($gui, $doc) {
 		if (rule.template) fGenVal = genValTemplate;
 		
 		var txt = fGenVal(val, ruleName, rule);
-		$('<p>')
-			.append(indentText)
-			.append( htmlEscape(txt) )
-			.appendTo($doc);
+		line(indentText + txt);
 	}
 	function genValElement(val, sldName, rule) {
 		return '<' + sldName + '>' 

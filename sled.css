@@ -30,6 +30,16 @@ input {
 .doc-stale {
 	color: lightgray;
 }
+.doc-linenum {
+	width: 6px;
+	color: #aaaaaa;
+	font-size: 10px;
+	vertical-align: bottom;
+    text-align: right;
+}
+.doc-line {
+	white-space: pre;
+}
 .sld-doc {
 	background: #eeeeee;
 	padding: 10px;
