@@ -53,6 +53,7 @@ SLED.renderDelete = function($obj, ref, rule) {
 	if ( Ref.isOpt(ref) || Ref.isMany(ref) )  {
 		$del = $('<span class="ctl-delete">').text('x');
 		$del.click(function() {
+			SLED.docChanged();
 			SLED.menuShow($obj, rule.title );
 			$obj.remove();
 		});
