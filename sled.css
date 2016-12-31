@@ -29,6 +29,7 @@ input {
 }
 .doc-stale {
 	color: lightgray;
+	background-color: #eeeeee;
 }
 .doc-linenum {
 	width: 6px;
