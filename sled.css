@@ -27,13 +27,16 @@ input {
 .doc p {
 	margin: 0px;
 }
+.doc-stale {
+	color: lightgray;
+}
 .sld-doc {
 	background: #eeeeee;
 	padding: 10px;
 }
 .type-block {
 	background: #dddddd;
-	padding: 8px 0px 5px 8px;	
+	padding: 3px 0px 3px 8px;	
 	border: 1px solid white
 }
 .type-block:hover {
@@ -78,12 +81,15 @@ input {
 .menu {
 	margin-left: 5px;
 	display: inline-block;
+	color: #a0a0ff;	
+}
+.menu:hover {
+	color: blue;
 }
 .menu-item {
 	font-size: 9pt;
 	padding: 3px;
 	cursor: pointer;
-	color: blue;	
 	display:inline-block;
 }
 .menu-item:hover {

@@ -1,4 +1,5 @@
 SLED.render = function($parent, refOrName) {
+	SLED.docChanged();
 	// convert rule name to ref
 	var ref = Ref.toRef(refOrName);
 	var rule = SLED.grammar[ ref.name ];
@@ -159,6 +160,12 @@ SLED.expandVal = function(val, rule) {
 	}
 	return val;
 }
+
+SLED.docChanged = function() {
+	$('#doc').addClass('doc-stale');
+	clearTimeout( SLED.timeout );
+	SLED.timeout = setTimeout(SLED.regen, 500);
+}
 //==============================================================================
 
 Ref = {};
@@ -178,8 +185,13 @@ Ref.toRef = function(refOrName) {
 //==============================================================================
 
 SLED.INDENT = '  ';
+SLED.regen = function() {
+	SLED.generate( $('#gui'), $('#doc') );
+}
+
 SLED.generate = function($gui, $doc) {
 	$doc.empty();
+	$('#doc').removeClass('doc-stale');
 	$('<p>').text('<?xml version="1.0" encoding="ISO-8859-1"?>').appendTo($doc);
 	$('<p>').text('<StyledLayerDescriptor version="1.0.0"').appendTo($doc);
 	$('<p>').text('  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"').appendTo($doc);
