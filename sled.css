@@ -50,7 +50,9 @@ input {
 .type-block {
 	background: #dddddd;
 	padding: 3px 0px 3px 8px;	
-	border: 1px solid white
+	border-width: 1px 0px 1px 1px;
+    border-style: solid;
+    border-color: white;
 }
 .type-block:hover {
 	border: 1px solid #888888;
