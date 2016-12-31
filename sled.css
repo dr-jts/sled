@@ -35,6 +35,7 @@ input {
 	width: 6px;
 	color: #aaaaaa;
 	font-size: 10px;
+	padding-right: 8px;
 	vertical-align: bottom;
     text-align: right;
 	user-select: none;
