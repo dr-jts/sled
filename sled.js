@@ -169,11 +169,11 @@ SLED.expandVal = function(val, rule) {
 	}
 	return val;
 }
-
+SLED.GEN_DELAY = 500;
 SLED.docChanged = function() {
 	$('#doc').addClass('doc-stale');
 	clearTimeout( SLED.timeout );
-	SLED.timeout = setTimeout(SLED.regen, 500);
+	SLED.timeout = setTimeout(SLED.regen, SLED.GEN_DELAY);
 }
 //==============================================================================
 
