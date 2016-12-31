@@ -169,11 +169,11 @@ SLED.expandVal = function(val, rule) {
 	}
 	return val;
 }
-
+SLED.GEN_DELAY = 500;
 SLED.docChanged = function() {
 	$('#doc').addClass('doc-stale');
 	clearTimeout( SLED.timeout );
-	SLED.timeout = setTimeout(SLED.regen, 500);
+	SLED.timeout = setTimeout(SLED.regen, SLED.GEN_DELAY);
 }
 //==============================================================================
 
@@ -212,64 +212,65 @@ SLED.generate = function($gui, $doc) {
 	line('  xmlns:ogc="http://www.opengis.net/ogc" ')
 	line('  xmlns:xlink="http://www.w3.org/1999/xlink" ')
 	line('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">')
-
-	/*
-	$('<p>').text('<?xml version="1.0" encoding="ISO-8859-1"?>').appendTo($doc);
-	$('<p>').text('<StyledLayerDescriptor version="1.0.0"').appendTo($doc);
-	$('<p>').text('  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"').appendTo($doc);
-	$('<p>').text('  xmlns="http://www.opengis.net/sld" ').appendTo($doc);
-	$('<p>').text('  xmlns:ogc="http://www.opengis.net/ogc" ').appendTo($doc);
-	$('<p>').text('  xmlns:xlink="http://www.w3.org/1999/xlink" ').appendTo($doc);
-	$('<p>').text('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">').appendTo($doc);
-	*/
 	
 	$sld = $gui.find('[rule-name]:first');
 	gen($sld, 0);
 	
 	line('</StyledLayerDescriptor>')
 	
-	function line(txt) {
+	function line(txt, indent) {
+		var indentText = ' '.repeat(indent);
 		$('<tr>').appendTo($t)
 			.append( $('<td class="doc-linenum">').text( lineNum++ ) )
-			.append( $('<td class="doc-line">').text( txt ) );
+			.append( $('<td class="doc-line">').text( indentText + txt ) );
 	}
 	function gen($parent, indent) {
 		indent = indent + 1;
-		var indentText = ' '.repeat(indent);
+		//var indentText = ' '.repeat(indent);
 		var $contents = $parent.children();
 		$contents.each(function(i, e) {
 			var $e = $(e);
-			var sldName = $e.attr('rule-name');
-			if (! sldName) {
+			var ruleName = $e.attr('rule-name');
+			if (! ruleName) {
 				gen($e, indent);
 			} 
 			else {
 				if ($e.hasClass('type-block')) {
-					line(indentText + '<' + sldName + '>');
-					gen($e, indent);
-					line(indentText + '</'+sldName+'>');
+					genBlock($e, ruleName, indent)
 				}
 				else { 
-					genVal($e, sldName, indentText);
+					genVal($e, ruleName, indent);
 				}
 			}
 		})
 	}
-	function genVal($e, ruleName, indentText) {
+	function genBlock($e, ruleName, indent) {
+		var rule = SLED.grammar[ ruleName ];
+		var tag = rule.tag ? rule.tag : ruleName;
+		var pref = rule.prefix ? rule.prefix+":" : "";
+		line('<' + pref + tag + '>', indent);
+		gen($e, indent);
+		line('</' + pref + tag + '>', indent);		
+	}
+	function genVal($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var val = formVal($e, rule);
+		// skip empty values
+		if (! val || val.length == 0) return;
 		
 		var fGenVal = genValElement;
 		if (rule.css) fGenVal = genValCSS;
 		if (rule.template) fGenVal = genValTemplate;
 		
 		var txt = fGenVal(val, ruleName, rule);
-		line(indentText + txt);
+		line(txt, indent);
 	}
-	function genValElement(val, sldName, rule) {
-		return '<' + sldName + '>' 
+	function genValElement(val, ruleName, rule) {
+		var pref = rule.prefix ? rule.prefix+":" : "";
+		var tag = rule.tag ? rule.tag : ruleName;
+		return '<' + pref + tag + '>' 
 				+ val 
-				+ '</' + sldName + '>';
+				+ '</' + pref + tag + '>';
 	}
 	function genValCSS(val, sldName, rule) {
 		return '<CssParameter name="' + rule.css + '">'
