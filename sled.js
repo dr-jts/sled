@@ -67,6 +67,8 @@ SLED.renderValue = function($obj, ref) {
 		.appendTo($obj);
 		
 	var $input = $('<input type="text" class="value-val">').appendTo($item).focus(); 
+	$input.bind('keyup', SLED.docChanged );
+
 	if (rule.val) {
 		$input.val(rule.val);
 	}
@@ -80,6 +82,7 @@ SLED.renderValue = function($obj, ref) {
 			.css('background-color', rule.val)
 			.appendTo($item);
 		$input.bind('keyup change', function() {
+			SLED.docChanged();
 			var clr = $input.val();
 			if (clr.length == 6) {
 				$clr.css('background-color', clr);
@@ -92,6 +95,7 @@ SLED.renderValue = function($obj, ref) {
 			}
 		});
 		$clrInput.bind('change', function() {
+			SLED.docChanged();
 			var clr = $clrInput.val();
 			$input.val(clr.substr(1));
 			$clr.css('background-color', clr);
