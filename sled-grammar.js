@@ -213,6 +213,21 @@ SLED.grammar.WellKnownName = {
 	val: "circle",
 	size: 30
 };
+SLED.grammar.Halo = {
+	title: "Halo",
+	content: [
+		{	name: "Radius",	mult: [0,1] },
+		{	name: "HaloFill",	mult: [0,1] }
+	]
+};
+SLED.grammar.HaloFill = {
+	tag: "Fill",
+	title: "Fill",
+	content: [
+		{	name: "FillColor",		mult: [0,1] },
+		{	name: "FillOpacity",	mult: [0,1] }
+	]
+};
 SLED.grammar.Label = {
 	title: "Label",
 	content: [
@@ -286,10 +301,6 @@ SLED.grammar.DisplacementY = {
 	val: "0",
 	size: 5
 };
-SLED.grammar.Halo = {
-	title: "Halo",
-	val: "1"
-};
 SLED.grammar.Priority = {
 	title: "Priority",
 	val: "1000"
@@ -322,6 +333,10 @@ SLED.grammar.Opacity = {
 SLED.grammar.Size = {
 	title: "Size",
 	val: "10"
+};
+SLED.grammar.Radius = {
+	title: "Radius",
+	val: "1"
 };
 SLED.grammar.Rotation = {
 	title: "Rotation",

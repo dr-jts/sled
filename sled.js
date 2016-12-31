@@ -218,10 +218,11 @@ SLED.generate = function($gui, $doc) {
 	
 	line('</StyledLayerDescriptor>')
 	
-	function line(txt) {
+	function line(txt, indent) {
+		var indentText = ' '.repeat(indent);
 		$('<tr>').appendTo($t)
 			.append( $('<td class="doc-linenum">').text( lineNum++ ) )
-			.append( $('<td class="doc-line">').text( txt ) );
+			.append( $('<td class="doc-line">').text( indentText + txt ) );
 	}
 	function gen($parent, indent) {
 		indent = indent + 1;
@@ -245,10 +246,11 @@ SLED.generate = function($gui, $doc) {
 	}
 	function genBlock($e, ruleName, indent, indentText) {
 		var rule = SLED.grammar[ ruleName ];
+		var tag = rule.tag ? rule.tag : ruleName;
 		var pref = rule.prefix ? rule.prefix+":" : "";
-		line(indentText + '<' + pref + ruleName + '>');
+		line(indentText + '<' + pref + tag + '>');
 		gen($e, indent);
-		line(indentText + '</' + pref + ruleName + '>');		
+		line(indentText + '</' + pref + tag + '>');		
 	}
 	function genVal($e, ruleName, indentText) {
 		var rule = SLED.grammar[ ruleName ];
@@ -261,11 +263,12 @@ SLED.generate = function($gui, $doc) {
 		var txt = fGenVal(val, ruleName, rule);
 		line(indentText + txt);
 	}
-	function genValElement(val, sldName, rule) {
+	function genValElement(val, ruleName, rule) {
 		var pref = rule.prefix ? rule.prefix+":" : "";
-		return '<' + pref + sldName + '>' 
+		var tag = rule.tag ? rule.tag : ruleName;
+		return '<' + pref + tag + '>' 
 				+ val 
-				+ '</' + pref + sldName + '>';
+				+ '</' + pref + tag + '>';
 	}
 	function genValCSS(val, sldName, rule) {
 		return '<CssParameter name="' + rule.css + '">'
