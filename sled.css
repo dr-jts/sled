@@ -37,6 +37,7 @@ input {
 	font-size: 10px;
 	vertical-align: bottom;
     text-align: right;
+	user-select: none;
 }
 .doc-line {
 	white-space: pre;
