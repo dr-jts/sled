@@ -7,7 +7,7 @@ SLED.render = function($parent, refOrName) {
 	var clzLayout = isBlock ? "type-block" : "type-value";
 	var $obj = $('<div>')
 		.addClass(clzLayout)
-		.attr('sld-name', ref.name);
+		.attr('rule-name', ref.name);
 		
 	var clzDepth = 'depth-even';
 	if ($parent.parent().hasClass('depth-even')) {
@@ -23,7 +23,6 @@ SLED.render = function($parent, refOrName) {
 		SLED.renderValue($obj, ref);
 	}
 }
-
 SLED.renderBlock = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
 	var isOpt = ref.mult[0] == 0;
@@ -42,9 +41,10 @@ SLED.renderBlock = function($obj, ref) {
 	$hdr.append($menu);
 	$obj.append($hdr);
 	
+	//render content markers in order
 	for (var i = 0; i < rule.content.length; i++) {
 		var refContent = rule.content[i];
-		SLED.renderRefMarker( $obj, refContent );
+		SLED.renderMarker( $obj, refContent );
 	}
 }
 SLED.renderDelete = function($obj, ref, rule) {
@@ -136,7 +136,7 @@ SLED.menuShow = function($obj, name) {
 	var $ref = $menu.find(':contains(' + name + ')');
 	$ref.show();
 }
-SLED.renderRefMarker = function($block, ref) {
+SLED.renderMarker = function($block, ref) {
 	var rule = SLED.grammar[ref.name];
 	var isMand = ref.mult[0] > 0;
 	var clzMarker = 'element-'+ref.name;
@@ -180,9 +180,15 @@ Ref.toRef = function(refOrName) {
 SLED.INDENT = '  ';
 SLED.generate = function($gui, $doc) {
 	$doc.empty();
-	$('<p>').text('<StyledLayerDescriptor>').appendTo($doc);
+	$('<p>').text('<?xml version="1.0" encoding="ISO-8859-1"?>').appendTo($doc);
+	$('<p>').text('<StyledLayerDescriptor version="1.0.0"').appendTo($doc);
+	$('<p>').text('  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"').appendTo($doc);
+	$('<p>').text('  xmlns="http://www.opengis.net/sld" ').appendTo($doc);
+	$('<p>').text('  xmlns:ogc="http://www.opengis.net/ogc" ').appendTo($doc);
+	$('<p>').text('  xmlns:xlink="http://www.w3.org/1999/xlink" ').appendTo($doc);
+	$('<p>').text('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">').appendTo($doc);
 	
-	$sld = $gui.find('[sld-name]:first');
+	$sld = $gui.find('[rule-name]:first');
 	gen($sld, 0);
 	
 	$('<p>').text('</StyledLayerDescriptor>').appendTo($doc);
@@ -193,7 +199,7 @@ SLED.generate = function($gui, $doc) {
 		var $contents = $parent.children();
 		$contents.each(function(i, e) {
 			var $e = $(e);
-			var sldName = $e.attr('sld-name');
+			var sldName = $e.attr('rule-name');
 			if (! sldName) {
 				gen($e, indent);
 			} 
@@ -215,33 +221,49 @@ SLED.generate = function($gui, $doc) {
 			}
 		})
 	}
-	function genVal($e, sldName, indentText) {
-		var rule = SLED.grammar[ sldName ];
+	function genVal($e, ruleName, indentText) {
+		var rule = SLED.grammar[ ruleName ];
+		var val = formVal($e, rule);
 		
-		var val = getVal($e, rule);
+		var fGenVal = genValElement;
+		if (rule.css) fGenVal = genValCSS;
+		if (rule.template) fGenVal = genValTemplate;
+		
+		var txt = fGenVal(val, ruleName, rule);
+		$('<p>')
+			.append(indentText)
+			.append( htmlEscape(txt) )
+			.appendTo($doc);
+	}
+	function genValElement(val, sldName, rule) {
+		return '<' + sldName + '>' 
+				+ val 
+				+ '</' + sldName + '>';
+	}
+	function genValCSS(val, sldName, rule) {
+		return '<CssParameter name="' + rule.css + '">'
+				+ val 
+				+ '</CssParameter>';
+	}
+	function genValTemplate(val, sldName, rule) {
+		var template = rule.template;
+		var txt = template.replace('$val', val);
+		return txt;
+	}
+	function formVal($e, rule) {
 		var input = $e.find('.value-val');
 		var val = $(input).val();
 		if (val.length <= 0) return;
 		
 		val = SLED.expandVal(val, rule);
-		
-		var txt;
-		if (rule.css) {
-			txt = '&lt;CssParameter name="' + rule.css + '"&gt;'
-				+ val 
-				+ '&lt;/CssParameter&gt;';
-		}
-		else {
-			txt = '&lt;' + sldName + '&gt;' 
-				+ val 
-				+ '&lt;/' + sldName + '&gt;';
-		}
-		$('<p>')
-			.append(indentText)
-			.append(txt)
-			.appendTo($doc);
+		return val;
 	}
-	function getVal($e, rule) {
-		
+	function htmlEscape(str) {
+		return str
+			.replace(/&/g, '&amp;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
 	}
 }

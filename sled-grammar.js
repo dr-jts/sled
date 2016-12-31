@@ -37,6 +37,7 @@ SLED.grammar.Rule = {
 		{ name: "Name",	mult: [0,1] },
 		{ name: "Title",	mult: [0,1] },
 		{ name: "Abstract",	mult: [0,1] },
+		{ name: "Filter",	mult: [0,1] },
 		{ name: "MinScale",	mult: [0,1] },
 		{ name: "MaxScale",	mult: [0,1] },
 		{ name: "PointSymbolizer",	mult: [0,99] },
@@ -44,6 +45,59 @@ SLED.grammar.Rule = {
 		{ name: "PolygonSymbolizer",	mult: [0,99] },
 		{ name: "TextSymbolizer",	mult: [0,99] }
 	]
+};
+SLED.grammar.Filter = {
+	title: "Filter",
+	content: [
+		{	name: "And",	mult: [0,1] },
+		{	name: "PropertyIsLessThan",	mult: [0,1] },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
+		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
+	]
+};
+SLED.grammar.And = {
+	title: "And",
+	content: [
+		{	name: "PropertyIsLessThan",	mult: [0,1] },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
+		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
+	]
+};
+SLED.grammar.PropertyIsLessThan = {
+	title: "<",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsLessThanOrEqualTo = {
+	title: "<=",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsGreaterThan = {
+	title: ">",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsGreaterThanOrEqualTo = {
+	title: ">=",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyName = {
+	title: "PropertyName"
+};
+SLED.grammar.Literal = {
+	title: "Literal"
 };
 SLED.grammar.PointSymbolizer = {
 	title: "Point",
@@ -138,6 +192,7 @@ SLED.grammar.Mark = {
 };
 SLED.grammar.OnlineResource = {
 	title: "OnlineResource",
+	template: '<OnlineResource  xlink:type="simple" xlink:href="$val" />',
 	val: "http://"
 	
 };
