@@ -161,6 +161,10 @@ SLED.expandVal = function(val, rule) {
 		if (rule.type == 'color') {
 			return val.startsWith('#') ? val : '#' + val;
 		}
+		if (rule.type == 'number') {
+			// strip commas
+			return val.replace(/,/g, "");
+		}
 	}
 	return val;
 }

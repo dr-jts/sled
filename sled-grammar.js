@@ -321,11 +321,13 @@ SLED.grammar.Rotation = {
 };
 SLED.grammar.MinScale = {
 	title: "MinScale",
+	type: "number",
 	val: "0",
 	size: 7
 };
 SLED.grammar.MaxScale = {
 	title: "MaxScale",
+	type: "number",
 	val: "10,000,000",
 	size: 7
 };
