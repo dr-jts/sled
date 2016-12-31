@@ -29,6 +29,19 @@ input {
 }
 .doc-stale {
 	color: lightgray;
+	background-color: #eeeeee;
+}
+.doc-linenum {
+	width: 6px;
+	color: #aaaaaa;
+	font-size: 10px;
+	padding-right: 8px;
+	vertical-align: bottom;
+    text-align: right;
+	user-select: none;
+}
+.doc-line {
+	white-space: pre;
 }
 .sld-doc {
 	background: #eeeeee;
