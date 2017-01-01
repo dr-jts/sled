@@ -3,14 +3,14 @@ SLED.grammar = {};
 SLED.grammar.root = {
 	title: "StyledLayerDescriptor",
 	content: [
-		{ name: "NamedLayer",	mult: [1,99] }   // default for now
+		{ name: "NamedLayer",	mult: [0,99], default: true }   // default for now
 	]
 };
 SLED.grammar.NamedLayer = {
 	title: "NamedLayer",
 	content: [
 		{ name: "Name",	mult: [1,1] },
-		{ name: "UserStyle", mult: [1,99] }   // default for now
+		{ name: "UserStyle", mult: [0,99], default: true  }   // default for now
 	]
 };
 SLED.grammar.UserStyle = {
