@@ -26,8 +26,6 @@ SLED.render = function($parent, refOrName) {
 }
 SLED.renderBlock = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
-	var isOpt = ref.mult[0] == 0;
-	var isMany = ref.mult[1] > 1;
 
 	var $hdr = $('<div class="block-header">');
 	var $title = $('<span class="block-name">').text( rule.title );
@@ -149,7 +147,7 @@ SLED.renderMarker = function($block, ref) {
 	
 	$('<div>').addClass(clzMarker).appendTo($block);
 
-	if (isMand) {
+	if (Ref.isMand(ref) || Ref.isDefault(ref)) {
 		SLED.render( SLED.findElement($block, ref.name), ref.name);
 	}
 }
@@ -180,6 +178,12 @@ SLED.docChanged = function() {
 Ref = {};
 Ref.isMany = function(ref) {
 	return ref.mult[1] > 1;
+}
+Ref.isMand = function(ref) {
+	return ref.mult[0] > 0;
+}
+Ref.isDefault = function(ref) {
+	return ref.default;
 }
 Ref.isOpt = function(ref) {
 	return ref.mult[0] == 0;
