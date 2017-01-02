@@ -60,12 +60,11 @@ SLED.renderDelete = function($obj, ref, rule) {
 }
 SLED.renderValue = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
-	$item = $('<div class="option-value">')
-		.append( SLED.renderDelete($obj, ref, rule) )
-		.append( $('<span class="value-title">').text( rule.title ) )
-		.appendTo($obj);
+	$obj.append( SLED.renderDelete($obj, ref, rule) );
+	$obj.append( $('<span class="value-title">').text( rule.title ) );
 		
-	var $input = $('<input type="text" class="value-val">').appendTo($item).focus(); 
+	var $input = $('<input type="text" class="value-val">').appendTo($obj).focus(); 
+
 	$input.bind('keyup', SLED.docChanged );
 
 	if (rule.val) {
@@ -76,10 +75,10 @@ SLED.renderValue = function($obj, ref) {
 	}
 	if (rule.type && rule.type == 'color') {
 		var $clrInput = $('<input type="color">')
-			.appendTo($item);
+			.appendTo($obj);
 		var $clr = $('<div class="color-swatch">')
 			.css('background-color', rule.val)
-			.appendTo($item);
+			.appendTo($obj);
 		$input.bind('keyup change', function() {
 			SLED.docChanged();
 			var clr = $input.val();
@@ -218,7 +217,7 @@ SLED.generate = function($gui, $doc) {
 	line('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">')
 	
 	$sld = $gui.find('[rule-name]:first');
-	gen($sld, 0);
+	scanRule($sld, 0);
 	
 	line('</StyledLayerDescriptor>')
 	
@@ -228,32 +227,34 @@ SLED.generate = function($gui, $doc) {
 			.append( $('<td class="doc-linenum">').text( lineNum++ ) )
 			.append( $('<td class="doc-line">').text( indentText + txt ) );
 	}
-	function gen($parent, indent) {
+	function scanRule($parent, indent) {
 		indent = indent + 1;
-		//var indentText = ' '.repeat(indent);
-		var $contents = $parent.children();
-		$contents.each(function(i, e) {
+		$parent.children().each(function(i, e) {
 			var $e = $(e);
 			var ruleName = $e.attr('rule-name');
-			if (! ruleName) {
-				gen($e, indent);
-			} 
-			else {
-				if ($e.hasClass('type-block')) {
-					genBlock($e, ruleName, indent)
-				}
-				else { 
-					genVal($e, ruleName, indent);
-				}
+			if (ruleName) {
+				genRule($e, ruleName, indent);
 			}
+			else {
+				// recurse down to next rule container element
+				scanRule($e, indent);
+			} 
 		})
+	}
+	function genRule($e, ruleName, indent) {
+		if ($e.hasClass('type-block')) {
+			genBlock($e, ruleName, indent)
+		}
+		else { 
+			genVal($e, ruleName, indent);
+		}
 	}
 	function genBlock($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var tag = rule.tag ? rule.tag : ruleName;
 		var pref = rule.prefix ? rule.prefix+":" : "";
 		line('<' + pref + tag + '>', indent);
-		gen($e, indent);
+		scanRule($e, indent);
 		line('</' + pref + tag + '>', indent);		
 	}
 	function genVal($e, ruleName, indent) {
@@ -294,6 +295,7 @@ SLED.generate = function($gui, $doc) {
 		val = SLED.expandVal(val, rule);
 		return val;
 	}
+	/*
 	function htmlEscape(str) {
 		return str
 			.replace(/&/g, '&amp;')
@@ -302,4 +304,5 @@ SLED.generate = function($gui, $doc) {
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;');
 	}
+	*/
 }
