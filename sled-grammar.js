@@ -51,6 +51,8 @@ SLED.grammar.Filter = {
 	title: "Filter",
 	content: [
 		{	name: "And",	mult: [0,1] },
+		{	name: "PropertyIsEqualTo",	mult: [0,1] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsLessThan",	mult: [0,1] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
@@ -61,10 +63,28 @@ SLED.grammar.And = {
 	prefix: "ogc",
 	title: "And",
 	content: [
+		{	name: "PropertyIsEqualTo",	mult: [0,1] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsLessThan",	mult: [0,1] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
 		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
+	]
+};
+SLED.grammar.PropertyIsEqualTo = {
+	prefix: "ogc",
+	title: "=",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsNotEqualTo = {
+	prefix: "ogc",
+	title: "!=",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
 	]
 };
 SLED.grammar.PropertyIsLessThan = {
