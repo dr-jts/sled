@@ -207,7 +207,7 @@ SLED.generate = function($gui, $doc) {
 	$doc.empty();
 	$('#doc').removeClass('doc-stale');
 	
-	var $t = $('<table>').appendTo($doc);
+	var $tbl = $('<table>').appendTo($doc);
 	var lineNum = 1;
 	
 	line('<?xml version="1.0" encoding="ISO-8859-1"?>');
@@ -219,58 +219,71 @@ SLED.generate = function($gui, $doc) {
 	line('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">')
 	
 	$sld = $gui.find('[rule-name]:first');
-	scanRule($sld, 0);
+	scanRule($sld, null, 0);
 	
 	line('</StyledLayerDescriptor>')
 	
 	function line(txt, indent) {
 		var indentText = ' '.repeat(indent);
-		$('<tr>').appendTo($t)
-			.append( $('<td class="doc-linenum">').text( lineNum++ ) )
-			.append( $('<td class="doc-line">').text( indentText + txt ) );
+		var $tr = $('<tr>').appendTo($tbl);
+		$('<td class="doc-linenum">').text( lineNum++ ).appendTo($tr);
+		var $tdText = $('<td class="doc-line">').text( indentText + txt ).appendTo($tr);
+		return $tdText;
 	}
-	function scanRule($parent, indent) {
+	function scanRule($parent, $tdStartTag, indent) {
 		indent = indent + 1;
-		$parent.children().each(function(i, e) {
-			var $e = $(e);
-			var ruleName = $e.attr('rule-name');
+		$parent.children().each(function(i, ch) {
+			var $ch = $(ch);
+			var ruleName = $ch.attr('rule-name');
 			if (ruleName) {
-				genRule($e, ruleName, indent);
+				genRule($ch, ruleName, $tdStartTag, indent);
 			}
 			else {
 				// recurse down to next rule container element
-				scanRule($e, indent);
+				scanRule($ch, $tdStartTag, indent);
 			} 
 		})
 	}
-	function genRule($e, ruleName, indent) {
+	function genRule($e, ruleName, $tdStartTag, indent) {
 		if ($e.hasClass('type-block')) {
 			genBlock($e, ruleName, indent)
 		}
 		else { 
-			genVal($e, ruleName, indent);
+			genVal($e, ruleName, $tdStartTag, indent);
 		}
 	}
 	function genBlock($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var tag = rule.tag ? rule.tag : ruleName;
 		var pref = rule.prefix ? rule.prefix+":" : "";
-		line('<' + pref + tag + '>', indent);
-		scanRule($e, indent);
+		var $tdStartTag = line('<' + pref + tag + '>', indent);
+		scanRule($e, $tdStartTag, indent);
 		line('</' + pref + tag + '>', indent);		
 	}
-	function genVal($e, ruleName, indent) {
+	function genVal($e, ruleName, $tdStartTag, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var val = formVal($e, rule);
 		// skip empty values
 		if (! val || val.length == 0) return;
 		
+		// testing
+		//$tdStartTag.text( $tdStartTag.text()+ruleName );
+		
 		var fGenVal = genValElement;
 		if (rule.css) fGenVal = genValCSS;
 		if (rule.template) fGenVal = genValTemplate;
+		if (rule.attribute) fGenVal = genValAttribute;
 		
-		var txt = fGenVal(val, ruleName, rule);
-		line(txt, indent);
+		var txtVal = fGenVal(val, ruleName, rule);
+		if (rule.attribute) {
+			var tag = $tdStartTag.text();
+			var pref = tag.substring(0, tag.length-1);
+			var newtag = pref + " " + txtVal + '>';
+			$tdStartTag.text( newtag );
+		}
+		else {
+		line(txtVal, indent);
+		}
 	}
 	function genValElement(val, ruleName, rule) {
 		var pref = rule.prefix ? rule.prefix+":" : "";
@@ -278,6 +291,10 @@ SLED.generate = function($gui, $doc) {
 		return '<' + pref + tag + '>' 
 				+ val 
 				+ '</' + pref + tag + '>';
+	}
+	function genValAttribute(val, ruleName, rule) {
+		var tag = rule.tag ? rule.tag : ruleName;
+		return tag + '="' + val + '"';
 	}
 	function genValCSS(val, sldName, rule) {
 		return '<CssParameter name="' + rule.css + '">'

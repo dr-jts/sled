@@ -75,6 +75,7 @@ SLED.grammar.PropertyIsEqualTo = {
 	prefix: "ogc",
 	title: "=",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -83,6 +84,7 @@ SLED.grammar.PropertyIsNotEqualTo = {
 	prefix: "ogc",
 	title: "!=",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -91,6 +93,7 @@ SLED.grammar.PropertyIsLessThan = {
 	prefix: "ogc",
 	title: "<",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -99,6 +102,7 @@ SLED.grammar.PropertyIsLessThanOrEqualTo = {
 	prefix: "ogc",
 	title: "<=",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -107,6 +111,7 @@ SLED.grammar.PropertyIsGreaterThan = {
 	prefix: "ogc",
 	title: ">",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -115,9 +120,15 @@ SLED.grammar.PropertyIsGreaterThanOrEqualTo = {
 	prefix: "ogc",
 	title: ">=",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
+};
+SLED.grammar.matchCase = {
+	attribute: true,
+	title: "matchCase",
+	val: "true"
 };
 SLED.grammar.PropertyName = {
 	prefix: "ogc",
