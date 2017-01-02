@@ -63,8 +63,7 @@ SLED.renderValue = function($obj, ref) {
 	$obj.append( SLED.renderDelete($obj, ref, rule) );
 	$obj.append( $('<span class="value-title">').text( rule.title ) );
 		
-	var $input = $('<input type="text" class="value-val">').appendTo($obj).focus(); 
-
+	var $input = $('<input type="text" class="value-val">').appendTo($obj).focus();
 	$input.bind('keyup', SLED.docChanged );
 
 	if (rule.val) {
@@ -73,33 +72,36 @@ SLED.renderValue = function($obj, ref) {
 	if (rule.size) {
 		$input.attr('size', rule.size);
 	}
-	if (rule.type && rule.type == 'color') {
-		var $clrInput = $('<input type="color">')
-			.appendTo($obj);
-		var $clr = $('<div class="color-swatch">')
-			.css('background-color', rule.val)
-			.appendTo($obj);
-		$input.bind('keyup change', function() {
-			SLED.docChanged();
-			var clr = $input.val();
-			if (clr.length == 6) {
-				$clr.css('background-color', clr);
-				$clr.removeClass('color-error');
-				$clrInput.val('#'+clr);
-			}
-			else {
-				$clr.css('background-color', '');
-				$clr.addClass('color-error');
-			}
-		});
-		$clrInput.bind('change', function() {
-			SLED.docChanged();
-			var clr = $clrInput.val();
-			$input.val(clr.substr(1));
+	if (rule.type == 'color') {
+		SLED.renderColor($obj, $input);
+	}
+}
+SLED.renderColor = function($obj, $input) {
+	var $clrInput = $('<input type="color">')
+		.appendTo($obj);
+	var $clr = $('<div class="color-swatch">')
+		.css('background-color', $input.val() )
+		.appendTo($obj);
+	$input.bind('keyup change', function() {
+		SLED.docChanged();
+		var clr = $input.val();
+		if (clr.length == 6) {
 			$clr.css('background-color', clr);
 			$clr.removeClass('color-error');
-		});
-	}
+			$clrInput.val('#'+clr);
+		}
+		else {
+			$clr.css('background-color', '');
+			$clr.addClass('color-error');
+		}
+	});
+	$clrInput.bind('change', function() {
+		SLED.docChanged();
+		var clr = $clrInput.val();
+		$input.val(clr.substr(1));
+		$clr.css('background-color', clr);
+		$clr.removeClass('color-error');
+	});
 }
 SLED.renderMenuRef = function($obj, $menu, ref) {
 	var rule = SLED.grammar[ref.name];
