@@ -173,8 +173,8 @@ SLED.grammar.TextSymbolizer = {
 SLED.grammar.Graphic = {
 	title: "Graphic",
 	content: [
-		{	name: "ExternalGraphic",	mult: [0,1], choiceGroup: "ExternalGraphic_Mark" },
-		{	name: "Mark",				mult: [0,1], choiceGroup: "ExternalGraphic_Mark" },
+		{	name: "ExternalGraphic",	mult: [0,1], choiceGroup: "Graphic_External_Mark" },
+		{	name: "Mark",				mult: [0,1], choiceGroup: "Graphic_External_Mark" },
 		{	name: "Opacity",	mult: [0,1] },
 		{	name: "Size",		mult: [0,1] },
 		{	name: "Rotation",	mult: [0,1] }
@@ -197,8 +197,8 @@ SLED.grammar.GraphicFill = {
 SLED.grammar.Stroke = {
 	title: "Stroke",
 	content: [
-		{	name: "GraphicFill",	mult: [0,1] },
-		{	name: "GraphicStroke",	mult: [0,1] },
+		{	name: "GraphicFill",	mult: [0,1], choiceGroup: "Stroke_Graphic" },
+		{	name: "GraphicStroke",	mult: [0,1], choiceGroup: "Stroke_Graphic" },
 		{	name: "StrokeColor",	mult: [0,1] },
 		{	name: "Width",	mult: [0,1] },
 		{	name: "StrokeOpacity",	mult: [0,1] },
