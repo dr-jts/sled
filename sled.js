@@ -29,14 +29,30 @@ SLED.renderBlock = function($obj, ref) {
 
 	var $hdr = $('<div class="block-header">');
 	var $title = $('<span class="block-name">').text( rule.title );
-	var $menu = $('<div class="menu">');
-	// contents
-	for (var i = 0; i < rule.content.length; i++) {
-		var refContent = rule.content[i];
-		SLED.renderMenuRef($obj, $menu, refContent);
-	}
 	$hdr.append( SLED.renderDelete($obj, ref, rule ));
 	$hdr.append($title);
+	
+	var $menu = $('<div class="menu">');
+	// contents
+	var currChoiceGroup = null;
+	for (var i = 0; i < rule.content.length; i++) {
+		var refContent = rule.content[i];
+		if (currChoiceGroup && currChoiceGroup != refContent.choiceGroup) {
+			/*$('<span>').text(")").attr('menu-tag', currChoiceGroup )
+				.appendTo($menu);*/
+			currChoiceGroup = null;		
+		}
+		if (currChoiceGroup && currChoiceGroup == refContent.choiceGroup) {
+			$('<span>').text("|").attr('menu-tag', refContent.choiceGroup)
+				.appendTo($menu);
+		}
+		if (refContent.choiceGroup && ! currChoiceGroup) {
+			/*$('<span>').text("(").attr('menu-tag', refContent.choiceGroup)
+				.appendTo($menu);*/
+			currChoiceGroup = refContent.choiceGroup;		
+		}
+		SLED.renderMenuRef($obj, $menu, refContent);
+	}
 	$hdr.append($menu);
 	$obj.append($hdr);
 	
@@ -46,64 +62,9 @@ SLED.renderBlock = function($obj, ref) {
 		SLED.renderMarker( $obj, refContent );
 	}
 }
-SLED.renderDelete = function($obj, ref, rule) {
-	var $del = null;
-	if ( Ref.isOpt(ref) || Ref.isMany(ref) )  {
-		$del = $('<span class="ctl-delete">').text('x');
-		$del.click(function() {
-			SLED.docChanged();
-			SLED.menuShow($obj, rule.title );
-			$obj.remove();
-		});
-	}
-	return $del;
-}
-SLED.renderValue = function($obj, ref) {
-	var rule = SLED.grammar[ ref.name ];
-	$item = $('<div class="option-value">')
-		.append( SLED.renderDelete($obj, ref, rule) )
-		.append( $('<span class="value-title">').text( rule.title ) )
-		.appendTo($obj);
-		
-	var $input = $('<input type="text" class="value-val">').appendTo($item).focus(); 
-	$input.bind('keyup', SLED.docChanged );
-
-	if (rule.val) {
-		$input.val(rule.val);
-	}
-	if (rule.size) {
-		$input.attr('size', rule.size);
-	}
-	if (rule.type && rule.type == 'color') {
-		var $clrInput = $('<input type="color">')
-			.appendTo($item);
-		var $clr = $('<div class="color-swatch">')
-			.css('background-color', rule.val)
-			.appendTo($item);
-		$input.bind('keyup change', function() {
-			SLED.docChanged();
-			var clr = $input.val();
-			if (clr.length == 6) {
-				$clr.css('background-color', clr);
-				$clr.removeClass('color-error');
-				$clrInput.val('#'+clr);
-			}
-			else {
-				$clr.css('background-color', '');
-				$clr.addClass('color-error');
-			}
-		});
-		$clrInput.bind('change', function() {
-			SLED.docChanged();
-			var clr = $clrInput.val();
-			$input.val(clr.substr(1));
-			$clr.css('background-color', clr);
-			$clr.removeClass('color-error');
-		});
-	}
-}
 SLED.renderMenuRef = function($obj, $menu, ref) {
 	var rule = SLED.grammar[ref.name];
+	
 	if (! rule) {
 		console.log('Missing rule: ' + ref.name);
 	}
@@ -117,28 +78,89 @@ SLED.renderMenuRef = function($obj, $menu, ref) {
 		title = rule.title;
 	}
 	
+	var menuTag = ref.choiceGroup ? ref.choiceGroup : title;
 	var $btn = $('<span>')
 		.addClass("menu-item")
 		.addClass(clz)
+		.attr('menu-tag', menuTag)
 		.text(title);
 	$btn.click(function() {
-		SLED.render( SLED.findElement($menu.parent().parent(), ref.name), ref);
 		if (isSingleton) {
-			//$btn.removeClass("ctl-option");
-			//$btn.addClass("ctl-disabled");
 			$btn.hide();
 		}
+		if (ref.choiceGroup) {
+			$menu.find('[menu-tag="' + ref.choiceGroup + '"]').hide();
+		}
+		SLED.render( SLED.findElement($menu.parent().parent(), ref.name), ref);
 	});
 	var isMand = ref.mult[0] > 0;
 	if (isMand && isSingleton) { $btn.hide(); }
 
 	$menu.append($btn);
 }
+SLED.renderDelete = function($obj, ref, rule) {
+	var $del = null;
+ 
+	if ( Ref.isOpt(ref) || Ref.isMany(ref) )  {
+		var menuTag = ref.choiceGroup ? ref.choiceGroup : rule.title;
+		$del = $('<span class="ctl-delete">').text('x');
+		$del.click(function() {
+			SLED.docChanged();
+			SLED.menuShow($obj, menuTag );
+			$obj.remove();
+		});
+	}
+	return $del;
+}
 SLED.menuShow = function($obj, name) {
 	var $p = $obj.parent().parent();
 	var $menu = $p.find('.menu');
-	var $ref = $menu.find(':contains(' + name + ')');
-	$ref.show();
+	$menu.find('[menu-tag="' + name + '"]').show();
+}
+SLED.renderValue = function($obj, ref) {
+	var rule = SLED.grammar[ ref.name ];
+	$obj.append( SLED.renderDelete($obj, ref, rule) );
+	$obj.append( $('<span class="value-title">').text( rule.title ) );
+		
+	var $input = $('<input type="text" class="value-val">').appendTo($obj).focus();
+	$input.bind('keyup', SLED.docChanged );
+
+	if (rule.val) {
+		$input.val(rule.val);
+	}
+	if (rule.size) {
+		$input.attr('size', rule.size);
+	}
+	if (rule.type == 'color') {
+		SLED.renderColor($obj, $input);
+	}
+}
+SLED.renderColor = function($obj, $input) {
+	var $clrInput = $('<input type="color">')
+		.appendTo($obj);
+	var $clr = $('<div class="color-swatch">')
+		.css('background-color', $input.val() )
+		.appendTo($obj);
+	$input.bind('keyup change', function() {
+		SLED.docChanged();
+		var clr = $input.val();
+		if (clr.length == 6) {
+			$clr.css('background-color', clr);
+			$clr.removeClass('color-error');
+			$clrInput.val('#'+clr);
+		}
+		else {
+			$clr.css('background-color', '');
+			$clr.addClass('color-error');
+		}
+	});
+	$clrInput.bind('change', function() {
+		SLED.docChanged();
+		var clr = $clrInput.val();
+		$input.val(clr.substr(1));
+		$clr.css('background-color', clr);
+		$clr.removeClass('color-error');
+	});
 }
 SLED.renderMarker = function($block, ref) {
 	var rule = SLED.grammar[ref.name];
@@ -206,7 +228,7 @@ SLED.generate = function($gui, $doc) {
 	$doc.empty();
 	$('#doc').removeClass('doc-stale');
 	
-	var $t = $('<table>').appendTo($doc);
+	var $tbl = $('<table>').appendTo($doc);
 	var lineNum = 1;
 	
 	line('<?xml version="1.0" encoding="ISO-8859-1"?>');
@@ -218,56 +240,71 @@ SLED.generate = function($gui, $doc) {
 	line('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">')
 	
 	$sld = $gui.find('[rule-name]:first');
-	gen($sld, 0);
+	scanRule($sld, null, 0);
 	
 	line('</StyledLayerDescriptor>')
 	
 	function line(txt, indent) {
 		var indentText = ' '.repeat(indent);
-		$('<tr>').appendTo($t)
-			.append( $('<td class="doc-linenum">').text( lineNum++ ) )
-			.append( $('<td class="doc-line">').text( indentText + txt ) );
+		var $tr = $('<tr>').appendTo($tbl);
+		$('<td class="doc-linenum">').text( lineNum++ ).appendTo($tr);
+		var $tdText = $('<td class="doc-line">').text( indentText + txt ).appendTo($tr);
+		return $tdText;
 	}
-	function gen($parent, indent) {
+	function scanRule($parent, $tdStartTag, indent) {
 		indent = indent + 1;
-		//var indentText = ' '.repeat(indent);
-		var $contents = $parent.children();
-		$contents.each(function(i, e) {
-			var $e = $(e);
-			var ruleName = $e.attr('rule-name');
-			if (! ruleName) {
-				gen($e, indent);
-			} 
-			else {
-				if ($e.hasClass('type-block')) {
-					genBlock($e, ruleName, indent)
-				}
-				else { 
-					genVal($e, ruleName, indent);
-				}
+		$parent.children().each(function(i, ch) {
+			var $ch = $(ch);
+			var ruleName = $ch.attr('rule-name');
+			if (ruleName) {
+				genRule($ch, ruleName, $tdStartTag, indent);
 			}
+			else {
+				// recurse down to next rule container element
+				scanRule($ch, $tdStartTag, indent);
+			} 
 		})
+	}
+	function genRule($e, ruleName, $tdStartTag, indent) {
+		if ($e.hasClass('type-block')) {
+			genBlock($e, ruleName, indent)
+		}
+		else { 
+			genVal($e, ruleName, $tdStartTag, indent);
+		}
 	}
 	function genBlock($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var tag = rule.tag ? rule.tag : ruleName;
 		var pref = rule.prefix ? rule.prefix+":" : "";
-		line('<' + pref + tag + '>', indent);
-		gen($e, indent);
+		var $tdStartTag = line('<' + pref + tag + '>', indent);
+		scanRule($e, $tdStartTag, indent);
 		line('</' + pref + tag + '>', indent);		
 	}
-	function genVal($e, ruleName, indent) {
+	function genVal($e, ruleName, $tdStartTag, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var val = formVal($e, rule);
 		// skip empty values
 		if (! val || val.length == 0) return;
 		
+		// testing
+		//$tdStartTag.text( $tdStartTag.text()+ruleName );
+		
 		var fGenVal = genValElement;
 		if (rule.css) fGenVal = genValCSS;
 		if (rule.template) fGenVal = genValTemplate;
+		if (rule.attribute) fGenVal = genValAttribute;
 		
-		var txt = fGenVal(val, ruleName, rule);
-		line(txt, indent);
+		var txtVal = fGenVal(val, ruleName, rule);
+		if (rule.attribute) {
+			var tag = $tdStartTag.text();
+			var pref = tag.substring(0, tag.length-1);
+			var newtag = pref + " " + txtVal + '>';
+			$tdStartTag.text( newtag );
+		}
+		else {
+		line(txtVal, indent);
+		}
 	}
 	function genValElement(val, ruleName, rule) {
 		var pref = rule.prefix ? rule.prefix+":" : "";
@@ -275,6 +312,10 @@ SLED.generate = function($gui, $doc) {
 		return '<' + pref + tag + '>' 
 				+ val 
 				+ '</' + pref + tag + '>';
+	}
+	function genValAttribute(val, ruleName, rule) {
+		var tag = rule.tag ? rule.tag : ruleName;
+		return tag + '="' + val + '"';
 	}
 	function genValCSS(val, sldName, rule) {
 		return '<CssParameter name="' + rule.css + '">'
@@ -294,6 +335,7 @@ SLED.generate = function($gui, $doc) {
 		val = SLED.expandVal(val, rule);
 		return val;
 	}
+	/*
 	function htmlEscape(str) {
 		return str
 			.replace(/&/g, '&amp;')
@@ -302,4 +344,5 @@ SLED.generate = function($gui, $doc) {
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;');
 	}
+	*/
 }

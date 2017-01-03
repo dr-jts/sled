@@ -51,6 +51,8 @@ SLED.grammar.Filter = {
 	title: "Filter",
 	content: [
 		{	name: "And",	mult: [0,1] },
+		{	name: "PropertyIsEqualTo",	mult: [0,1] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsLessThan",	mult: [0,1] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
@@ -61,16 +63,37 @@ SLED.grammar.And = {
 	prefix: "ogc",
 	title: "And",
 	content: [
+		{	name: "PropertyIsEqualTo",	mult: [0,1] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsLessThan",	mult: [0,1] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
 		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
 	]
 };
+SLED.grammar.PropertyIsEqualTo = {
+	prefix: "ogc",
+	title: "=",
+	content: [
+		{	name: "matchCase",	mult: [0,1] },
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsNotEqualTo = {
+	prefix: "ogc",
+	title: "!=",
+	content: [
+		{	name: "matchCase",	mult: [0,1] },
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
 SLED.grammar.PropertyIsLessThan = {
 	prefix: "ogc",
 	title: "<",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -79,6 +102,7 @@ SLED.grammar.PropertyIsLessThanOrEqualTo = {
 	prefix: "ogc",
 	title: "<=",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -87,6 +111,7 @@ SLED.grammar.PropertyIsGreaterThan = {
 	prefix: "ogc",
 	title: ">",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
@@ -95,9 +120,15 @@ SLED.grammar.PropertyIsGreaterThanOrEqualTo = {
 	prefix: "ogc",
 	title: ">=",
 	content: [
+		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
+};
+SLED.grammar.matchCase = {
+	attribute: true,
+	title: "matchCase",
+	val: "true"
 };
 SLED.grammar.PropertyName = {
 	prefix: "ogc",
@@ -142,8 +173,8 @@ SLED.grammar.TextSymbolizer = {
 SLED.grammar.Graphic = {
 	title: "Graphic",
 	content: [
-		{	name: "ExternalGraphic",	mult: [0,1] },
-		{	name: "Mark",		mult: [0,1] },
+		{	name: "ExternalGraphic",	mult: [0,1], choiceGroup: "Graphic_External_Mark" },
+		{	name: "Mark",				mult: [0,1], choiceGroup: "Graphic_External_Mark" },
 		{	name: "Opacity",	mult: [0,1] },
 		{	name: "Size",		mult: [0,1] },
 		{	name: "Rotation",	mult: [0,1] }
@@ -166,8 +197,8 @@ SLED.grammar.GraphicFill = {
 SLED.grammar.Stroke = {
 	title: "Stroke",
 	content: [
-		{	name: "GraphicFill",	mult: [0,1] },
-		{	name: "GraphicStroke",	mult: [0,1] },
+		{	name: "GraphicFill",	mult: [0,1], choiceGroup: "Stroke_Graphic" },
+		{	name: "GraphicStroke",	mult: [0,1], choiceGroup: "Stroke_Graphic" },
 		{	name: "StrokeColor",	mult: [0,1] },
 		{	name: "Width",	mult: [0,1] },
 		{	name: "StrokeOpacity",	mult: [0,1] },
@@ -237,8 +268,8 @@ SLED.grammar.Label = {
 SLED.grammar.LabelPlacement = {
 	title: "LabelPlacement",
 	content: [
-		{	name: "PointPlacement",	mult: [0,1] },
-		{	name: "LinePlacement",	mult: [0,1] }
+		{	name: "PointPlacement",	mult: [0,1], choiceGroup: "Point_Line_Placement"  },
+		{	name: "LinePlacement",	mult: [0,1], choiceGroup: "Point_Line_Placement"  }
 	]
 };
 SLED.grammar.PointPlacement = {
