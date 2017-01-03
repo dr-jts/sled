@@ -173,8 +173,8 @@ SLED.grammar.TextSymbolizer = {
 SLED.grammar.Graphic = {
 	title: "Graphic",
 	content: [
-		{	name: "ExternalGraphic",	mult: [0,1] },
-		{	name: "Mark",		mult: [0,1] },
+		{	name: "ExternalGraphic",	mult: [0,1], choiceGroup: "ExternalGraphic_Mark" },
+		{	name: "Mark",				mult: [0,1], choiceGroup: "ExternalGraphic_Mark" },
 		{	name: "Opacity",	mult: [0,1] },
 		{	name: "Size",		mult: [0,1] },
 		{	name: "Rotation",	mult: [0,1] }
@@ -268,8 +268,8 @@ SLED.grammar.Label = {
 SLED.grammar.LabelPlacement = {
 	title: "LabelPlacement",
 	content: [
-		{	name: "PointPlacement",	mult: [0,1] },
-		{	name: "LinePlacement",	mult: [0,1] }
+		{	name: "PointPlacement",	mult: [0,1], choiceGroup: "Point_Line_Placement"  },
+		{	name: "LinePlacement",	mult: [0,1], choiceGroup: "Point_Line_Placement"  }
 	]
 };
 SLED.grammar.PointPlacement = {

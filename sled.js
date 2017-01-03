@@ -29,14 +29,30 @@ SLED.renderBlock = function($obj, ref) {
 
 	var $hdr = $('<div class="block-header">');
 	var $title = $('<span class="block-name">').text( rule.title );
-	var $menu = $('<div class="menu">');
-	// contents
-	for (var i = 0; i < rule.content.length; i++) {
-		var refContent = rule.content[i];
-		SLED.renderMenuRef($obj, $menu, refContent);
-	}
 	$hdr.append( SLED.renderDelete($obj, ref, rule ));
 	$hdr.append($title);
+	
+	var $menu = $('<div class="menu">');
+	// contents
+	var currChoiceGroup = null;
+	for (var i = 0; i < rule.content.length; i++) {
+		var refContent = rule.content[i];
+		if (currChoiceGroup && currChoiceGroup != refContent.choiceGroup) {
+			/*$('<span>').text(")").attr('menu-tag', currChoiceGroup )
+				.appendTo($menu);*/
+			currChoiceGroup = null;		
+		}
+		if (currChoiceGroup && currChoiceGroup == refContent.choiceGroup) {
+			$('<span>').text("|").attr('menu-tag', refContent.choiceGroup)
+				.appendTo($menu);
+		}
+		if (refContent.choiceGroup && ! currChoiceGroup) {
+			/*$('<span>').text("(").attr('menu-tag', refContent.choiceGroup)
+				.appendTo($menu);*/
+			currChoiceGroup = refContent.choiceGroup;		
+		}
+		SLED.renderMenuRef($obj, $menu, refContent);
+	}
 	$hdr.append($menu);
 	$obj.append($hdr);
 	
@@ -46,17 +62,60 @@ SLED.renderBlock = function($obj, ref) {
 		SLED.renderMarker( $obj, refContent );
 	}
 }
+SLED.renderMenuRef = function($obj, $menu, ref) {
+	var rule = SLED.grammar[ref.name];
+	
+	if (! rule) {
+		console.log('Missing rule: ' + ref.name);
+	}
+	var isList = ref.mult[0] >= 0 && ref.mult[1] > 1;
+	var isSingleton = ref.mult[1] == 1;
+	
+	var clz = "ctl-add";
+	var title = rule.title + '*';
+	if (isSingleton) { 
+		clz = "ctl-option"; 
+		title = rule.title;
+	}
+	
+	var menuTag = ref.choiceGroup ? ref.choiceGroup : title;
+	var $btn = $('<span>')
+		.addClass("menu-item")
+		.addClass(clz)
+		.attr('menu-tag', menuTag)
+		.text(title);
+	$btn.click(function() {
+		if (isSingleton) {
+			$btn.hide();
+		}
+		if (ref.choiceGroup) {
+			$menu.find('[menu-tag="' + ref.choiceGroup + '"]').hide();
+		}
+		SLED.render( SLED.findElement($menu.parent().parent(), ref.name), ref);
+	});
+	var isMand = ref.mult[0] > 0;
+	if (isMand && isSingleton) { $btn.hide(); }
+
+	$menu.append($btn);
+}
 SLED.renderDelete = function($obj, ref, rule) {
 	var $del = null;
+ 
 	if ( Ref.isOpt(ref) || Ref.isMany(ref) )  {
+		var menuTag = ref.choiceGroup ? ref.choiceGroup : rule.title;
 		$del = $('<span class="ctl-delete">').text('x');
 		$del.click(function() {
 			SLED.docChanged();
-			SLED.menuShow($obj, rule.title );
+			SLED.menuShow($obj, menuTag );
 			$obj.remove();
 		});
 	}
 	return $del;
+}
+SLED.menuShow = function($obj, name) {
+	var $p = $obj.parent().parent();
+	var $menu = $p.find('.menu');
+	$menu.find('[menu-tag="' + name + '"]').show();
 }
 SLED.renderValue = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
@@ -102,44 +161,6 @@ SLED.renderColor = function($obj, $input) {
 		$clr.css('background-color', clr);
 		$clr.removeClass('color-error');
 	});
-}
-SLED.renderMenuRef = function($obj, $menu, ref) {
-	var rule = SLED.grammar[ref.name];
-	if (! rule) {
-		console.log('Missing rule: ' + ref.name);
-	}
-	var isList = ref.mult[0] >= 0 && ref.mult[1] > 1;
-	var isSingleton = ref.mult[1] == 1;
-	
-	var clz = "ctl-add";
-	var title = rule.title + '*';
-	if (isSingleton) { 
-		clz = "ctl-option"; 
-		title = rule.title;
-	}
-	
-	var $btn = $('<span>')
-		.addClass("menu-item")
-		.addClass(clz)
-		.text(title);
-	$btn.click(function() {
-		SLED.render( SLED.findElement($menu.parent().parent(), ref.name), ref);
-		if (isSingleton) {
-			//$btn.removeClass("ctl-option");
-			//$btn.addClass("ctl-disabled");
-			$btn.hide();
-		}
-	});
-	var isMand = ref.mult[0] > 0;
-	if (isMand && isSingleton) { $btn.hide(); }
-
-	$menu.append($btn);
-}
-SLED.menuShow = function($obj, name) {
-	var $p = $obj.parent().parent();
-	var $menu = $p.find('.menu');
-	var $ref = $menu.find(':contains(' + name + ')');
-	$ref.show();
 }
 SLED.renderMarker = function($block, ref) {
 	var rule = SLED.grammar[ref.name];
