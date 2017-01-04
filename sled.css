@@ -44,7 +44,7 @@ input {
 	user-select: none;
 }
 .doc-linenum::before {
-	content: attr(linenum);
+	content: attr(data-linenum);
 }
 .doc-line {
 	white-space: pre;

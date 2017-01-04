@@ -8,7 +8,7 @@ SLED.render = function($parent, refOrName) {
 	var clzLayout = isBlock ? "type-block" : "type-value";
 	var $obj = $('<div>')
 		.addClass(clzLayout)
-		.attr('rule-name', ref.name);
+		.attr('data-rule-name', ref.name);
 		
 	var clzDepth = 'depth-even';
 	if ($parent.parent().hasClass('depth-even')) {
@@ -43,7 +43,7 @@ SLED.renderBlock = function($obj, ref) {
 			currChoiceGroup = null;		
 		}
 		if (currChoiceGroup && currChoiceGroup == refContent.choiceGroup) {
-			$('<span>').text("|").attr('menu-tag', refContent.choiceGroup)
+			$('<span>').text("|").attr('data-menu-tag', refContent.choiceGroup)
 				.appendTo($menu);
 		}
 		if (refContent.choiceGroup && ! currChoiceGroup) {
@@ -82,14 +82,14 @@ SLED.renderMenuRef = function($obj, $menu, ref) {
 	var $btn = $('<span>')
 		.addClass("menu-item")
 		.addClass(clz)
-		.attr('menu-tag', menuTag)
+		.attr('data-menu-tag', menuTag)
 		.text(title);
 	$btn.click(function() {
 		if (isSingleton) {
 			$btn.hide();
 		}
 		if (ref.choiceGroup) {
-			$menu.find('[menu-tag="' + ref.choiceGroup + '"]').hide();
+			$menu.find('[data-menu-tag="' + ref.choiceGroup + '"]').hide();
 		}
 		SLED.render( SLED.findElement($menu.parent().parent(), ref.name), ref);
 	});
@@ -239,7 +239,7 @@ SLED.generate = function($gui, $doc) {
 	line('  xmlns:xlink="http://www.w3.org/1999/xlink" ')
 	line('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">')
 	
-	$sld = $gui.find('[rule-name]:first');
+	$sld = $gui.find('[data-rule-name]:first');
 	scanRule($sld, null, 0);
 	
 	line('</StyledLayerDescriptor>')
@@ -248,7 +248,7 @@ SLED.generate = function($gui, $doc) {
 		var indentText = ' '.repeat(indent);
 		var $tr = $('<tr>').appendTo($tbl);
 		//$('<td class="doc-linenum">').text( lineNum++ ).appendTo($tr);
-		$('<td class="doc-linenum">').attr( 'linenum', lineNum++ ).appendTo($tr);
+		$('<td class="doc-linenum">').attr( 'data-linenum', lineNum++ ).appendTo($tr);
 		var $tdText = $('<td class="doc-line">').text( indentText + txt ).appendTo($tr);
 		return $tdText;
 	}
@@ -256,7 +256,7 @@ SLED.generate = function($gui, $doc) {
 		indent = indent + 1;
 		$parent.children().each(function(i, ch) {
 			var $ch = $(ch);
-			var ruleName = $ch.attr('rule-name');
+			var ruleName = $ch.attr('data-rule-name');
 			if (ruleName) {
 				genRule($ch, ruleName, $tdStartTag, indent);
 			}
