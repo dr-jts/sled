@@ -38,7 +38,13 @@ input {
 	padding-right: 8px;
 	vertical-align: bottom;
     text-align: right;
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 	user-select: none;
+}
+.doc-linenum::before {
+	content: attr(linenum);
 }
 .doc-line {
 	white-space: pre;

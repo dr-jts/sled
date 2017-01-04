@@ -247,7 +247,8 @@ SLED.generate = function($gui, $doc) {
 	function line(txt, indent) {
 		var indentText = ' '.repeat(indent);
 		var $tr = $('<tr>').appendTo($tbl);
-		$('<td class="doc-linenum">').text( lineNum++ ).appendTo($tr);
+		//$('<td class="doc-linenum">').text( lineNum++ ).appendTo($tr);
+		$('<td class="doc-linenum">').attr( 'linenum', lineNum++ ).appendTo($tr);
 		var $tdText = $('<td class="doc-line">').text( indentText + txt ).appendTo($tr);
 		return $tdText;
 	}
