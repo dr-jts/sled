@@ -180,7 +180,7 @@ SLED.findElement = function($e, name) {
 SLED.expandVal = function(val, rule) {
 	if (rule.type) {
 		if (rule.type == 'color') {
-			return val.startsWith('#') ? val : '#' + val;
+			return val.startsWith('#') ? val.toUpperCase() : '#' + val.toUpperCase();
 		}
 		if (rule.type == 'number') {
 			// strip commas
