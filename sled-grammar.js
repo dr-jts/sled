@@ -80,30 +80,30 @@ SLED.grammar.And = {
 	prefix: "ogc",
 	title: "And",
 	content: [
-		{	name: "Not",	mult: [0,1] },
-		{	name: "And",	mult: [0,1] },
-		{	name: "Or",		mult: [0,1] },
-		{	name: "PropertyIsEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsLessThan",	mult: [0,1] },
-		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
+		{	name: "Not",					mult: [0,99 ] },
+		{	name: "And",					mult: [0,99 ] },
+		{	name: "Or",						mult: [0,99 ] },
+		{	name: "PropertyIsEqualTo",		mult: [0,99 ] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] }
 	]
 };
 SLED.grammar.Or = {
 	prefix: "ogc",
 	title: "Or",
 	content: [
-		{	name: "Not",	mult: [0,1] },
-		{	name: "And",	mult: [0,1] },
-		{	name: "Or",		mult: [0,1] },
-		{	name: "PropertyIsEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsLessThan",	mult: [0,1] },
-		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
+		{	name: "Not",					mult: [0,99 ] },
+		{	name: "And",					mult: [0,99 ] },
+		{	name: "Or",						mult: [0,99 ] },
+		{	name: "PropertyIsEqualTo",		mult: [0,99 ] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] }
 	]
 };
 SLED.grammar.PropertyIsEqualTo = {
