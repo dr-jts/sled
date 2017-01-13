@@ -38,8 +38,8 @@ SLED.grammar.Rule = {
 		{ name: "Title",	mult: [0,1] },
 		{ name: "Abstract",	mult: [0,1] },
 		{ name: "Filter",	mult: [0,1] },
-		{ name: "MinScale",	mult: [0,1] },
-		{ name: "MaxScale",	mult: [0,1] },
+		{ name: "MinScaleDenominator",	mult: [0,1] },
+		{ name: "MaxScaleDenominator",	mult: [0,1] },
 		{ name: "PointSymbolizer",	mult: [0,99] },
 		{ name: "LineSymbolizer",	mult: [0,99] },
 		{ name: "PolygonSymbolizer",	mult: [0,99] },
@@ -408,13 +408,13 @@ SLED.grammar.Rotation = {
 	title: "Rotation",
 	val: "0"
 };
-SLED.grammar.MinScale = {
+SLED.grammar.MinScaleDenominator = {
 	title: "MinScale",
 	type: "number",
 	val: "0",
 	size: 7
 };
-SLED.grammar.MaxScale = {
+SLED.grammar.MaxScaleDenominator = {
 	title: "MaxScale",
 	type: "number",
 	val: "10,000,000",
