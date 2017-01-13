@@ -285,8 +285,13 @@ SLED.generate = function($gui, $doc) {
 	function genVal($e, ruleName, $tdStartTag, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var val = formVal($e, rule);
-		// skip empty values
-		if (! val || val.length == 0) return;
+		var isEmpty = ! val || val.length == 0;
+		
+		// don't skip empty values - if they are in GUI should appear in doc
+		//if (! rule.allowEmpty && isEmpty) return;
+		
+		// ensure value is blank if empty
+		if (isEmpty) val = '';
 		
 		// testing
 		//$tdStartTag.text( $tdStartTag.text()+ruleName );
