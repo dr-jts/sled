@@ -58,7 +58,10 @@ SLED.grammar.Filter = {
 		{	name: "PropertyIsLessThan",		mult: [0,1], choiceGroup: "Filter" },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1], choiceGroup: "Filter" },
 		{	name: "PropertyIsGreaterThan",	mult: [0,1], choiceGroup: "Filter" },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Filter" }
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Filter" },
+		{	name: "PropertyIsBetween",		mult: [0,1 ], choiceGroup: "Filter" },
+		{	name: "PropertyIsLike",			mult: [0,1 ], choiceGroup: "Filter" },
+		{	name: "PropertyIsNull",			mult: [0,1 ], choiceGroup: "Filter" }
 	]
 };
 SLED.grammar.Not = {
@@ -73,7 +76,10 @@ SLED.grammar.Not = {
 		{	name: "PropertyIsLessThan",		mult: [0,1], choiceGroup: "Not" },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1], choiceGroup: "Not" },
 		{	name: "PropertyIsGreaterThan",	mult: [0,1], choiceGroup: "Not" },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Not" }
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Not" },
+		{	name: "PropertyIsBetween",		mult: [0,1 ], choiceGroup: "Not" },
+		{	name: "PropertyIsLike",			mult: [0,1 ], choiceGroup: "Not" },
+		{	name: "PropertyIsNull",			mult: [0,1 ], choiceGroup: "Not" }
 	]
 };
 SLED.grammar.And = {
@@ -88,7 +94,10 @@ SLED.grammar.And = {
 		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] }
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsBetween",	mult: [0,99 ] },
+		{	name: "PropertyIsLike",	mult: [0,99 ] },
+		{	name: "PropertyIsNull",	mult: [0,99 ] }
 	]
 };
 SLED.grammar.Or = {
@@ -103,7 +112,10 @@ SLED.grammar.Or = {
 		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] }
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsBetween",	mult: [0,99 ] },
+		{	name: "PropertyIsLike",	mult: [0,99 ] },
+		{	name: "PropertyIsNull",	mult: [0,99 ] }
 	]
 };
 SLED.grammar.PropertyIsEqualTo = {
@@ -157,6 +169,44 @@ SLED.grammar.PropertyIsGreaterThanOrEqualTo = {
 	content: [
 		{	name: "matchCase",	mult: [0,1] },
 		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsLike = {
+	prefix: "ogc",
+	title: "Like",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsNull = {
+	prefix: "ogc",
+	title: "Null",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] }
+	]
+};
+SLED.grammar.PropertyIsBetween = {
+	prefix: "ogc",
+	title: "Between",
+	content: [
+		{	name: "PropertyName",	mult: [1,1] },
+		{	name: "LowerBoundary",	mult: [1,1] },
+		{	name: "UpperBoundary",	mult: [1,1] }
+	]
+};
+SLED.grammar.LowerBoundary = {
+	prefix: "ogc",
+	title: "LowerBoundary",
+	content: [
+		{	name: "Literal",	mult: [1,1] }
+	]
+};
+SLED.grammar.UpperBoundary = {
+	prefix: "ogc",
+	title: "UpperBoundary",
+	content: [
 		{	name: "Literal",	mult: [1,1] }
 	]
 };
