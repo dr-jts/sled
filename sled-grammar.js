@@ -16,7 +16,7 @@ SLED.grammar.NamedLayer = {
 SLED.grammar.UserStyle = {
 	title: "UserStyle",
 	content: [
-		{ name: "Name",	mult: [0,1] },
+		{ name: "Name",	mult: [1,1] },
 		{ name: "Title",	mult: [0,1] },
 		{ name: "Abstract",	mult: [0,1] },
 		{ name: "FeatureTypeStyle",	mult: [1,99] }
@@ -38,8 +38,8 @@ SLED.grammar.Rule = {
 		{ name: "Title",	mult: [0,1] },
 		{ name: "Abstract",	mult: [0,1] },
 		{ name: "Filter",	mult: [0,1] },
-		{ name: "MinScale",	mult: [0,1] },
-		{ name: "MaxScale",	mult: [0,1] },
+		{ name: "MinScaleDenominator",	mult: [0,1] },
+		{ name: "MaxScaleDenominator",	mult: [0,1] },
 		{ name: "PointSymbolizer",	mult: [0,99] },
 		{ name: "LineSymbolizer",	mult: [0,99] },
 		{ name: "PolygonSymbolizer",	mult: [0,99] },
@@ -50,25 +50,60 @@ SLED.grammar.Filter = {
 	prefix: "ogc",
 	title: "Filter",
 	content: [
-		{	name: "And",	mult: [0,1] },
-		{	name: "PropertyIsEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsLessThan",	mult: [0,1] },
-		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
+		{	name: "Not",					mult: [0,1], choiceGroup: "Filter" },
+		{	name: "And",					mult: [0,1], choiceGroup: "Filter" },
+		{	name: "Or",						mult: [0,1], choiceGroup: "Filter" },
+		{	name: "PropertyIsEqualTo",		mult: [0,1], choiceGroup: "Filter" },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,1], choiceGroup: "Filter" },
+		{	name: "PropertyIsLessThan",		mult: [0,1], choiceGroup: "Filter" },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1], choiceGroup: "Filter" },
+		{	name: "PropertyIsGreaterThan",	mult: [0,1], choiceGroup: "Filter" },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Filter" }
+	]
+};
+SLED.grammar.Not = {
+	prefix: "ogc",
+	title: "Not",
+	content: [
+		{	name: "Not",					mult: [0,1], choiceGroup: "Not" },
+		{	name: "And",					mult: [0,1], choiceGroup: "Not" },
+		{	name: "Or",						mult: [0,1], choiceGroup: "Not" },
+		{	name: "PropertyIsEqualTo",		mult: [0,1], choiceGroup: "Not" },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,1], choiceGroup: "Not" },
+		{	name: "PropertyIsLessThan",		mult: [0,1], choiceGroup: "Not" },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1], choiceGroup: "Not" },
+		{	name: "PropertyIsGreaterThan",	mult: [0,1], choiceGroup: "Not" },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Not" }
 	]
 };
 SLED.grammar.And = {
 	prefix: "ogc",
 	title: "And",
 	content: [
-		{	name: "PropertyIsEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsNotEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsLessThan",	mult: [0,1] },
-		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThan",	mult: [0,1] },
-		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1] }
+		{	name: "Not",					mult: [0,99 ] },
+		{	name: "And",					mult: [0,99 ] },
+		{	name: "Or",						mult: [0,99 ] },
+		{	name: "PropertyIsEqualTo",		mult: [0,99 ] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] }
+	]
+};
+SLED.grammar.Or = {
+	prefix: "ogc",
+	title: "Or",
+	content: [
+		{	name: "Not",					mult: [0,99 ] },
+		{	name: "And",					mult: [0,99 ] },
+		{	name: "Or",						mult: [0,99 ] },
+		{	name: "PropertyIsEqualTo",		mult: [0,99 ] },
+		{	name: "PropertyIsNotEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
+		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
+		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] }
 	]
 };
 SLED.grammar.PropertyIsEqualTo = {
@@ -373,13 +408,13 @@ SLED.grammar.Rotation = {
 	title: "Rotation",
 	val: "0"
 };
-SLED.grammar.MinScale = {
+SLED.grammar.MinScaleDenominator = {
 	title: "MinScale",
 	type: "number",
 	val: "0",
 	size: 7
 };
-SLED.grammar.MaxScale = {
+SLED.grammar.MaxScaleDenominator = {
 	title: "MaxScale",
 	type: "number",
 	val: "10,000,000",
