@@ -460,13 +460,13 @@ SLED.grammar.Rotation = {
 };
 SLED.grammar.MinScaleDenominator = {
 	title: "MinScale",
-	type: "number",
+	datatype: "number",
 	val: "0",
 	size: 7
 };
 SLED.grammar.MaxScaleDenominator = {
 	title: "MaxScale",
-	type: "number",
+	datatype: "number",
 	val: "10,000,000",
 	size: 7
 };
@@ -481,7 +481,7 @@ SLED.grammar.Abstract = {
 };
 SLED.grammar.FillColor = {
 	title: "color",
-	type: "color",
+	datatype: "color",
 	css: "fill",
 	val: "000000",
 	size: 4
@@ -494,7 +494,7 @@ SLED.grammar.FillOpacity = {
 };
 SLED.grammar.StrokeColor = {
 	title: "color",
-	type: "color",
+	datatype: "color",
 	css: "stroke",
 	val: "000000",
 	size: 4

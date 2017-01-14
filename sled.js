@@ -1,11 +1,11 @@
 SLED.render = function($parent, refOrName) {
 	SLED.docChanged();
-	// convert rule name to ref
+	// convert to ref
 	var ref = Ref.toRef(refOrName);
 	var rule = SLED.grammar[ ref.name ];
 	
-	var isBlock = rule.content;
-	var clzLayout = isBlock ? "type-block" : "type-value";
+	var isElement = rule.content;
+	var clzLayout = isElement ? "type-element" : "type-value";
 	var $obj = $('<div>')
 		.addClass(clzLayout)
 		.attr('data-rule-name', ref.name);
@@ -17,18 +17,26 @@ SLED.render = function($parent, refOrName) {
 	$obj.addClass(clzDepth);
 	$parent.append($obj);	
 	
-	if (isBlock) {
-		SLED.renderBlock($obj, ref);
+	if (isElement) {
+		SLED.renderElement($obj, ref, rule );
 	}
 	else {
-		SLED.renderValue($obj, ref);
+		SLED.renderValue($obj, ref, rule );
 	}
 }
-SLED.renderBlock = function($obj, ref) {
-	var rule = SLED.grammar[ ref.name ];
+SLED.RuleType = {};
+SLED.RuleType.ELEMENT = 'element';
+SLED.RuleType.CHOICE = 'choice';
+SLED.RuleType.VALUE = 'value';
 
-	var $hdr = $('<div class="block-header">');
-	var $title = $('<span class="block-name">').text( rule.title );
+SLED.ruleTye = function(name, rule) {
+	if (rule.ruletype) return ruletype;
+	if (rule.content) return SLED.RuleType.ELEMENT;
+	return SLED.RuleType.VALUE;
+}
+SLED.renderElement = function($obj, ref, rule) {
+	var $hdr = $('<div class="element-header">');
+	var $title = $('<span class="element-name">').text( rule.title );
 	$hdr.append( SLED.renderDelete($obj, ref, rule ));
 	$hdr.append($title);
 	
@@ -117,8 +125,7 @@ SLED.menuShow = function($obj, name) {
 	var $menu = $p.find('.menu');
 	$menu.find('[data-menu-tag="' + name + '"]').show();
 }
-SLED.renderValue = function($obj, ref) {
-	var rule = SLED.grammar[ ref.name ];
+SLED.renderValue = function($obj, ref, rule ) {
 	$obj.append( SLED.renderDelete($obj, ref, rule) );
 	$obj.append( $('<span class="value-title">').text( rule.title ) );
 		
@@ -131,7 +138,7 @@ SLED.renderValue = function($obj, ref) {
 	if (rule.size) {
 		$input.attr('size', rule.size);
 	}
-	if (rule.type == 'color') {
+	if (rule.datatype == 'color') {
 		SLED.renderColor($obj, $input);
 	}
 }
@@ -162,15 +169,15 @@ SLED.renderColor = function($obj, $input) {
 		$clr.removeClass('color-error');
 	});
 }
-SLED.renderMarker = function($block, ref) {
+SLED.renderMarker = function($elt, ref) {
 	var rule = SLED.grammar[ref.name];
 	var isMand = ref.mult[0] > 0;
 	var clzMarker = 'element-'+ref.name;
 	
-	$('<div>').addClass(clzMarker).appendTo($block);
+	$('<div>').addClass(clzMarker).appendTo($elt);
 
 	if (Ref.isMand(ref) || Ref.isDefault(ref)) {
-		SLED.render( SLED.findElement($block, ref.name), ref.name);
+		SLED.render( SLED.findElement($elt, ref.name), ref.name);
 	}
 }
 SLED.findElement = function($e, name) {
@@ -178,11 +185,11 @@ SLED.findElement = function($e, name) {
 	return elts;
 }
 SLED.expandVal = function(val, rule) {
-	if (rule.type) {
-		if (rule.type == 'color') {
+	if (rule.datatype) {
+		if (rule.datatype == 'color') {
 			return val.startsWith('#') ? val.toUpperCase() : '#' + val.toUpperCase();
 		}
-		if (rule.type == 'number') {
+		if (rule.datatype == 'number') {
 			// strip commas
 			return val.replace(/,/g, "");
 		}
@@ -267,14 +274,14 @@ SLED.generate = function($gui, $doc) {
 		})
 	}
 	function genRule($e, ruleName, $tdStartTag, indent) {
-		if ($e.hasClass('type-block')) {
-			genBlock($e, ruleName, indent)
+		if ($e.hasClass('type-element')) {
+			genElement($e, ruleName, indent)
 		}
 		else { 
 			genVal($e, ruleName, $tdStartTag, indent);
 		}
 	}
-	function genBlock($e, ruleName, indent) {
+	function genElement($e, ruleName, indent) {
 		var rule = SLED.grammar[ ruleName ];
 		var tag = rule.tag ? rule.tag : ruleName;
 		var pref = rule.prefix ? rule.prefix+":" : "";
