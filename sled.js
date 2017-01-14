@@ -115,7 +115,7 @@ SLED.renderDelete = function($obj, ref, rule) {
 SLED.menuShow = function($obj, name) {
 	var $p = $obj.parent().parent();
 	var $menu = $p.find('.menu');
-	$menu.find('[menu-tag="' + name + '"]').show();
+	$menu.find('[data-menu-tag="' + name + '"]').show();
 }
 SLED.renderValue = function($obj, ref) {
 	var rule = SLED.grammar[ ref.name ];
