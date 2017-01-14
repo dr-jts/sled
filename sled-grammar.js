@@ -176,9 +176,27 @@ SLED.grammar.PropertyIsLike = {
 	prefix: "ogc",
 	title: "Like",
 	content: [
+		{	name: "wildCard",	mult: [1,1] },
+		{	name: "singleChar",	mult: [1,1] },
+		{	name: "escapeChar",	mult: [1,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
+};
+SLED.grammar.wildCard = {
+	attribute: true,
+	title: "wildCard",
+	val: "*"
+};
+SLED.grammar.singleChar = {
+	attribute: true,
+	title: "singleChar",
+	val: "%"
+};
+SLED.grammar.escapeChar = {
+	attribute: true,
+	title: "escapeChar",
+	val: "!"
 };
 SLED.grammar.PropertyIsNull = {
 	prefix: "ogc",
@@ -318,7 +336,6 @@ SLED.grammar.OnlineResource = {
 	title: "OnlineResource",
 	template: '<OnlineResource  xlink:type="simple" xlink:href="$val" />',
 	val: "http://"
-	
 };
 SLED.grammar.Format = {
 	title: "Format",
