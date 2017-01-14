@@ -186,16 +186,19 @@ SLED.grammar.PropertyIsLike = {
 SLED.grammar.wildCard = {
 	attribute: true,
 	title: "wildCard",
+	size: 1,
 	val: "*"
 };
 SLED.grammar.singleChar = {
 	attribute: true,
 	title: "singleChar",
+	size: 1,
 	val: "%"
 };
 SLED.grammar.escapeChar = {
 	attribute: true,
 	title: "escapeChar",
+	size: 1,
 	val: "!"
 };
 SLED.grammar.PropertyIsNull = {
