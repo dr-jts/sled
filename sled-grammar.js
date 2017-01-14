@@ -50,9 +50,6 @@ SLED.grammar.Filter = {
 	prefix: "ogc",
 	title: "Filter",
 	content: [
-		{	name: "Not",					mult: [0,1], choiceGroup: "Filter" },
-		{	name: "And",					mult: [0,1], choiceGroup: "Filter" },
-		{	name: "Or",						mult: [0,1], choiceGroup: "Filter" },
 		{	name: "PropertyIsEqualTo",		mult: [0,1], choiceGroup: "Filter" },
 		{	name: "PropertyIsNotEqualTo",	mult: [0,1], choiceGroup: "Filter" },
 		{	name: "PropertyIsLessThan",		mult: [0,1], choiceGroup: "Filter" },
@@ -61,16 +58,16 @@ SLED.grammar.Filter = {
 		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Filter" },
 		{	name: "PropertyIsBetween",		mult: [0,1 ], choiceGroup: "Filter" },
 		{	name: "PropertyIsLike",			mult: [0,1 ], choiceGroup: "Filter" },
-		{	name: "PropertyIsNull",			mult: [0,1 ], choiceGroup: "Filter" }
+		{	name: "PropertyIsNull",			mult: [0,1 ], choiceGroup: "Filter" },
+		{	name: "And",					mult: [0,1], choiceGroup: "Filter" },
+		{	name: "Or",						mult: [0,1], choiceGroup: "Filter" },
+		{	name: "Not",					mult: [0,1], choiceGroup: "Filter" }
 	]
 };
 SLED.grammar.Not = {
 	prefix: "ogc",
 	title: "Not",
 	content: [
-		{	name: "Not",					mult: [0,1], choiceGroup: "Not" },
-		{	name: "And",					mult: [0,1], choiceGroup: "Not" },
-		{	name: "Or",						mult: [0,1], choiceGroup: "Not" },
 		{	name: "PropertyIsEqualTo",		mult: [0,1], choiceGroup: "Not" },
 		{	name: "PropertyIsNotEqualTo",	mult: [0,1], choiceGroup: "Not" },
 		{	name: "PropertyIsLessThan",		mult: [0,1], choiceGroup: "Not" },
@@ -79,43 +76,46 @@ SLED.grammar.Not = {
 		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,1], choiceGroup: "Not" },
 		{	name: "PropertyIsBetween",		mult: [0,1 ], choiceGroup: "Not" },
 		{	name: "PropertyIsLike",			mult: [0,1 ], choiceGroup: "Not" },
-		{	name: "PropertyIsNull",			mult: [0,1 ], choiceGroup: "Not" }
+		{	name: "PropertyIsNull",			mult: [0,1 ], choiceGroup: "Not" },
+		{	name: "And",					mult: [0,1], choiceGroup: "Not" },
+		{	name: "Or",						mult: [0,1], choiceGroup: "Not" },
+		{	name: "Not",					mult: [0,1], choiceGroup: "Not" }
 	]
 };
 SLED.grammar.And = {
 	prefix: "ogc",
 	title: "And",
 	content: [
-		{	name: "Not",					mult: [0,99 ] },
-		{	name: "And",					mult: [0,99 ] },
-		{	name: "Or",						mult: [0,99 ] },
 		{	name: "PropertyIsEqualTo",		mult: [0,99 ] },
 		{	name: "PropertyIsNotEqualTo",	mult: [0,99 ] },
 		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
 		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] },
-		{	name: "PropertyIsBetween",	mult: [0,99 ] },
-		{	name: "PropertyIsLike",	mult: [0,99 ] },
-		{	name: "PropertyIsNull",	mult: [0,99 ] }
+		{	name: "PropertyIsBetween",		mult: [0,99 ] },
+		{	name: "PropertyIsLike",			mult: [0,99 ] },
+		{	name: "PropertyIsNull",			mult: [0,99 ] },
+		{	name: "And",					mult: [0,99 ] },
+		{	name: "Or",						mult: [0,99 ] },
+		{	name: "Not",					mult: [0,99 ] }
 	]
 };
 SLED.grammar.Or = {
 	prefix: "ogc",
 	title: "Or",
 	content: [
-		{	name: "Not",					mult: [0,99 ] },
-		{	name: "And",					mult: [0,99 ] },
-		{	name: "Or",						mult: [0,99 ] },
 		{	name: "PropertyIsEqualTo",		mult: [0,99 ] },
 		{	name: "PropertyIsNotEqualTo",	mult: [0,99 ] },
 		{	name: "PropertyIsLessThan",		mult: [0,99 ] },
 		{	name: "PropertyIsLessThanOrEqualTo",	mult: [0,99 ] },
 		{	name: "PropertyIsGreaterThan",	mult: [0,99 ] },
 		{	name: "PropertyIsGreaterThanOrEqualTo",	mult: [0,99 ] },
-		{	name: "PropertyIsBetween",	mult: [0,99 ] },
-		{	name: "PropertyIsLike",	mult: [0,99 ] },
-		{	name: "PropertyIsNull",	mult: [0,99 ] }
+		{	name: "PropertyIsBetween",		mult: [0,99 ] },
+		{	name: "PropertyIsLike",			mult: [0,99 ] },
+		{	name: "PropertyIsNull",			mult: [0,99 ] },
+		{	name: "And",					mult: [0,99 ] },
+		{	name: "Or",						mult: [0,99 ] },
+		{	name: "Not",					mult: [0,99 ] }
 	]
 };
 SLED.grammar.PropertyIsEqualTo = {
@@ -176,9 +176,30 @@ SLED.grammar.PropertyIsLike = {
 	prefix: "ogc",
 	title: "Like",
 	content: [
+		{	name: "wildCard",	mult: [1,1] },
+		{	name: "singleChar",	mult: [1,1] },
+		{	name: "escapeChar",	mult: [1,1] },
 		{	name: "PropertyName",	mult: [1,1] },
 		{	name: "Literal",	mult: [1,1] }
 	]
+};
+SLED.grammar.wildCard = {
+	attribute: true,
+	title: "wildCard",
+	size: 1,
+	val: "*"
+};
+SLED.grammar.singleChar = {
+	attribute: true,
+	title: "singleChar",
+	size: 1,
+	val: "%"
+};
+SLED.grammar.escapeChar = {
+	attribute: true,
+	title: "escapeChar",
+	size: 1,
+	val: "!"
 };
 SLED.grammar.PropertyIsNull = {
 	prefix: "ogc",
@@ -318,7 +339,6 @@ SLED.grammar.OnlineResource = {
 	title: "OnlineResource",
 	template: '<OnlineResource  xlink:type="simple" xlink:href="$val" />',
 	val: "http://"
-	
 };
 SLED.grammar.Format = {
 	title: "Format",
@@ -460,13 +480,13 @@ SLED.grammar.Rotation = {
 };
 SLED.grammar.MinScaleDenominator = {
 	title: "MinScale",
-	type: "number",
+	datatype: "number",
 	val: "0",
 	size: 7
 };
 SLED.grammar.MaxScaleDenominator = {
 	title: "MaxScale",
-	type: "number",
+	datatype: "number",
 	val: "10,000,000",
 	size: 7
 };
@@ -481,7 +501,7 @@ SLED.grammar.Abstract = {
 };
 SLED.grammar.FillColor = {
 	title: "color",
-	type: "color",
+	datatype: "color",
 	css: "fill",
 	val: "000000",
 	size: 4
@@ -494,7 +514,7 @@ SLED.grammar.FillOpacity = {
 };
 SLED.grammar.StrokeColor = {
 	title: "color",
-	type: "color",
+	datatype: "color",
 	css: "stroke",
 	val: "000000",
 	size: 4

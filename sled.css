@@ -44,7 +44,7 @@ input {
 	user-select: none;
 }
 .doc-linenum::before {
-	content: attr(linenum);
+	content: attr(data-linenum);
 }
 .doc-line {
 	white-space: pre;
@@ -53,14 +53,14 @@ input {
 	background: #eeeeee;
 	padding: 10px;
 }
-.type-block {
+.type-element {
 	background: #dddddd;
 	padding: 3px 0px 3px 8px;	
 	border-width: 1px 0px 1px 1px;
     border-style: solid;
     border-color: white;
 }
-.type-block:hover {
+.type-element:hover {
 	border: 1px solid #888888;
 	border-width: 1px 0px 1px 1px;
 	background: #e8efe8;
@@ -74,7 +74,7 @@ input {
 	background: #bbbbbb;
 }
 
-.block-name {
+.element-name {
 	font-weight: bold;
 	font-family: monospace;
     font-size: 14px;
