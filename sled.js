@@ -4,8 +4,8 @@ SLED.render = function($parent, refOrName) {
 	var ref = Ref.toRef(refOrName);
 	var rule = SLED.grammar[ ref.name ];
 	
-	var isElement = rule.content;
-	var clzLayout = isElement ? "type-element" : "type-value";
+	var ruletype = SLED.ruleType(ref.name, rule);
+	var clzLayout = ruletype.blockClass;
 	var $obj = $('<div>')
 		.addClass(clzLayout)
 		.attr('data-rule-name', ref.name);
@@ -17,23 +17,16 @@ SLED.render = function($parent, refOrName) {
 	$obj.addClass(clzDepth);
 	$parent.append($obj);	
 	
-	if (isElement) {
-		SLED.renderElement($obj, ref, rule );
-	}
-	else {
-		SLED.renderValue($obj, ref, rule );
-	}
+	ruletype.renderFn($obj, ref, rule );
 }
-SLED.RuleType = {};
-SLED.RuleType.ELEMENT = 'element';
-SLED.RuleType.CHOICE = 'choice';
-SLED.RuleType.VALUE = 'value';
 
-SLED.ruleTye = function(name, rule) {
-	if (rule.ruletype) return ruletype;
-	if (rule.content) return SLED.RuleType.ELEMENT;
-	return SLED.RuleType.VALUE;
+SLED.ruleType = function(name, rule) {
+	if (rule.ruletype) return SLED.RuleType[rule.ruletype];
+	if (rule.content) return SLED.RuleType.element;
+	if (rule.choice) return SLED.RuleType.choice;
+	return SLED.RuleType.value;
 }
+
 SLED.renderElement = function($obj, ref, rule) {
 	var $hdr = $('<div class="element-header">');
 	var $title = $('<span class="element-name">').text( rule.title );
@@ -180,6 +173,23 @@ SLED.renderMarker = function($elt, ref) {
 		SLED.render( SLED.findElement($elt, ref.name), ref.name);
 	}
 }
+SLED.RuleType = {};
+SLED.RuleType.element = {
+	ruletype: 'element',
+	blockClass: 'type-element',
+	renderFn: SLED.renderElement
+};
+SLED.RuleType.choice = {
+	ruletype: 'choice',
+	blockClass: 'type-choice',
+	renderFn: SLED.renderChoice
+};
+SLED.RuleType.value = {
+	ruletype: 'value',
+	blockClass: 'type-value',
+	renderFn: SLED.renderValue
+};
+
 SLED.findElement = function($e, name) {
 	var elts = $e.find('.element-'+name + ':first');
 	return elts;
