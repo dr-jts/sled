@@ -16,7 +16,7 @@ SLED.grammar.NamedLayer = {
 SLED.grammar.UserStyle = {
 	title: "UserStyle",
 	content: [
-		{ name: "Name",	mult: [1,1] },
+		{ name: "Name",	mult: [0,1] },
 		{ name: "Title",	mult: [0,1] },
 		{ name: "Abstract",	mult: [0,1] },
 		{ name: "FeatureTypeStyle",	mult: [1,99] }
