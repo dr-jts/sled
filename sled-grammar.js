@@ -279,8 +279,8 @@ SLED.grammar.TextSymbolizer = {
 SLED.grammar.Graphic = {
 	title: "Graphic",
 	content: [
-		{	name: "ExternalGraphic",	mult: [0,1], choiceGroup: "Graphic_External_Mark" },
-		{	name: "Mark",				mult: [0,1], choiceGroup: "Graphic_External_Mark" },
+		{	name: "ExternalGraphic",	mult: [0,99 ] },
+		{	name: "Mark",				mult: [0,99 ] },
 		{	name: "Opacity",	mult: [0,1] },
 		{	name: "Size",		mult: [0,1] },
 		{	name: "Rotation",	mult: [0,1] }
